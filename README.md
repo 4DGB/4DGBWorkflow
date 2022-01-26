@@ -10,6 +10,7 @@ The input to the workflow is a yaml file with the following values:
 project:
     name:       Project Name
     interval:   200000
+    annotation: file.gff3
 
 arrays:
     - name:     array one
