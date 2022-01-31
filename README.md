@@ -72,6 +72,7 @@ file. The `array.json` file is metadata about the array, and the
 `array.npz` file is a compressed python python file containing float
 arrays as specified in the associated `array.json`.
 
+Specification of the `array.json` file:
 ```
 {
 "name"      : "name of the array",  
