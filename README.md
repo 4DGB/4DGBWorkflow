@@ -97,3 +97,22 @@ Specification of the `array.json` file:
 }
 ```
 
+## Annotation `csv` file
+
+A general file for providing annotations for the workflow's sequence.
+
+```
+name:  a string naming the annotation
+start: the 1-based ID of the start position in the sequence
+end:   the 1-based ID of the end position in the sequence
+id:    an identified for the annotation
+thype: one of [gene, megadomain, or other user-defined type]
+```
+
+example of the `annotation.csv` file:
+```
+name,start,end,id,type
+first,100000,200000,CEN,megadomain
+second,200000,300000,CEN,megadomain
+```
+
