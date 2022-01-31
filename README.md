@@ -51,6 +51,12 @@ num_beads = (num base pairs in sequence)/(project:interval)
 
 ## Structure `.csv` file
 
+A structure `.csv` file is a three-column csv file in which the first line
+names the coordinate `[x,y,z]` of the structure point. The ID of the point is 
+the number of the line, where the first data line is ID `1`, and the ids
+increment by one until the last line. The file has `num_beads + 1` lines, the first of which is the name of the coordinate. There are three coordinates,
+and their order is not specified, but all three must be present. 
+
 ```
 x,y,z
 0.0,0.0,0.0
