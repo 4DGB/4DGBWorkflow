@@ -67,34 +67,27 @@ x,y,z
 
 ## Array data
 
-An array is specified by two files: a `array.json` file and a `array.npz` 
-file. The `array.json` file is metadata about the array, and the 
+An array is specified by two files: a `array.yaml` file and a `array.npz` 
+file. The `array.yaml` file is metadata about the array, and the 
 `array.npz` file is a compressed python python file containing float
-arrays as specified in the associated `array.json`.
+arrays as specified in the associated `array.yaml`.
 
-Specification of the `array.json` file:
+Specification of the `array.yaml` file:
 ```
-{
-"name"      : "name of the array",  
-"type"      : "structure",
-"version"   : "version of the array metadata file",
-"data"      : {
-    "type"  : "int",
-    "dim"   : 1,
-    "min"   : 1,
-    "max"   : 833,
-    "values" : [
-        {
-            "id"  : "name expected by python when extracting data",
-            "url" : "relative path to the npz file"
-        },
-        {
-            "id"  : "name expected by python when extracting data",
-            "url" : "relative path to the npz file"
-        }
-    ]
-}
-}
+name    : name of the array
+type    : structure
+version : version of the array metadata file
+data    :
+    type    : string value, one of [int, float]
+    dim     : integer
+    min     : integer
+    max     : integer (equivalent to num_beads)
+    values :
+        - id : name expected by python when extracting data
+          url: relative path to the npz file
+        - id : name expected by python when extracting data
+          url: relative path to the npz file
+        ...
 ```
 
 ## Annotation `csv` file
