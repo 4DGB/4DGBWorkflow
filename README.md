@@ -45,8 +45,3 @@ num_beads = (num base pairs in sequence)/(project:interval)
   that go from 1 to (num_beads - 1) The first bead is at sequence position 
   `interval`. Therefore, the first `[1, (interval - 1)]` beads are not 
   represented in the 3D structure file.
-
-# Parameter Specifications
-
-
-
