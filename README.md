@@ -33,18 +33,15 @@ datasets:
       hic:      data02.hic              (required)
 ```
 
-# Computed Parameters
+# Computed Values
 
 Quantities that are computed from input.
 
 ```
 num_beads = (num base pairs in sequence)/(project:interval)
-beads     = a 1-based integer array of size num_beads, with IDs
-            that go from 1 to (num_beads - 1)
-            The first bead is at position (interval). The first
 ```
 
-- `**beads**` a 1-based `integer` array of size `num_beads`, with IDs
+- **`bead`s** a 1-based `integer` array of size `num_beads`, with IDs
   that go from 1 to (num_beads - 1) The first bead is at sequence position 
   `interval`. Therefore, the first `[1, (interval - 1)]` beads are not 
   represented in the 3D structure file.
