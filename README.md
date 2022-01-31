@@ -22,9 +22,9 @@ sequence:
 
 arrays:
     - name:     array one               (optional)
-      data:     somefile.csv            (required)
+      data:     somefile.json           (required)
     - name:     array two               (optional)
-      data:     somefile.csv            (required)
+      data:     somefile.json           (required)
     - ...
 
 datasets:
@@ -64,3 +64,35 @@ x,y,z
 0.2,0.2,0.2
 ...
 ```
+
+## Array data
+
+An array is specified by two files: a `array.json` file and a `array.npz` 
+file. The `array.json` file is metadata about the array, and the 
+`array.npz` file is a compressed python python file containing float
+arrays as specified in the associated `array.json`.
+
+```
+{
+"name"      : "name of the array",  
+"type"      : "structure",
+"version"   : "version of the array metadata file",
+"data"      : {
+    "type"  : "int",
+    "dim"   : 1,
+    "min"   : 1,
+    "max"   : 833,
+    "values" : [
+        {
+            "id"  : "name expected by python when extracting data",
+            "url" : "relative path to the npz file"
+        },
+        {
+            "id"  : "name expected by python when extracting data",
+            "url" : "relative path to the npz file"
+        }
+    ]
+}
+}
+```
+
