@@ -65,7 +65,7 @@ x,y,z
 ...
 ```
 
-## Array data
+## Array data (array.yaml and array.npz)
 
 An array is specified by two files: a `array.yaml` file and a `array.npz` 
 file. The `array.yaml` file is metadata about the array, and the 
