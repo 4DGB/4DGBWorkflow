@@ -6,7 +6,8 @@ as input, creates a 3D structure, and starts a 4DGB server.
 
 # Input Parameters
 
-The input to the workflow is a yaml file with the following values:
+The input to the workflow is a file named `workflow.yaml` with 
+the following values:
 
 ```
 project:
