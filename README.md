@@ -1,6 +1,8 @@
 # 4DGB Workflow
 
-repository init
+A repository of an end-to-end workflow that takes hic and other data 
+as input, creates a 3D structure, and starts a 4DGB server.
+
 
 # Input Parameters
 
@@ -9,9 +11,13 @@ The input to the workflow is a yaml file with the following values:
 ```
 project:
     name:       Project Name            (required)
-    interval:   200000                  (required)
+    interval:   integer                 (optional, default=200000)
     annotation: file.gff3               (required)
     blackout:   [a list of bead IDs]    (optional)
+
+sequence:
+    - name:     name of sequence        (required)
+    - data:     url of sequence         (required) 
 
 arrays:
     - name:     array one               (optional)
@@ -26,5 +32,24 @@ datasets:
     - name:     Name of second dataset  (required)
       hic:      data02.hic              (required)
 ```
+
+# Computed Parameters
+
+Quantities that are computed from input.
+
+```
+num_beads = (num base pairs in sequence)/(project|interval)
+beads     = a 1-based integer array of size num_beads, with IDs
+            that go from 1 to (num_beads - 1)
+            The first bead is at position (interval). The first
+```
+
+- `**beads**` a 1-based `integer` array of size `num_beads`, with IDs
+  that go from 1 to (num_beads - 1) The first bead is at sequence position 
+  `interval`. Therefore, the first `[1, (interval - 1)]` beads are not 
+  represented in the 3D structure file.
+
+# Parameter Specifications
+
 
 
