@@ -109,7 +109,7 @@ id:    an identified for the annotation
 thype: one of [gene, megadomain, or other user-defined type]
 ```
 
-example of the `annotation.csv` file:
+Example of the `annotation.csv` file:
 ```
 name,start,end,id,type
 first,100000,200000,CEN,megadomain
