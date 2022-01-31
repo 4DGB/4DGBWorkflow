@@ -22,9 +22,9 @@ sequence:
 
 arrays:
     - name:     array one               (optional)
-      data:     somefile.json           (required)
+      data:     somefile.yaml           (required)
     - name:     array two               (optional)
-      data:     somefile.json           (required)
+      data:     somefile.yaml           (required)
     - ...
 
 datasets:
