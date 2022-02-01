@@ -99,11 +99,11 @@ file, or the column name of the data in the `array.csv` file.
 A general file for providing annotations for the workflow's sequence.
 
 ```
-name:  a string naming the annotation
-start: the 1-based ID of the start position in the sequence
-end:   the 1-based ID of the end position in the sequence
-id:    an identified for the annotation
-thype: one of [gene, megadomain, or other user-defined type]
+name:   a string naming the annotation
+start:  the 1-based ID of the start position in the sequence
+end:    the 1-based ID of the end position in the sequence
+id:     an identified for the annotation
+type:   one of [gene, megadomain, or other user-defined type]
 ```
 
 Example of the `annotation.csv` file:
