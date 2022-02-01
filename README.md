@@ -17,8 +17,8 @@ project:
     blackout:   [a list of bead IDs]    (optional)
 
 sequence:
-    - name:     name of sequence        (required)
-    - data:     url of sequence         (required) 
+    name:       name of sequence        (required)
+    data:       url of sequence         (required) 
 
 arrays:
     - name:     array one               (optional)
