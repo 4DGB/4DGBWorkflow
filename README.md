@@ -78,9 +78,10 @@ type    : structure
 version : version of the array metadata file
 data    :
     type    : string value, one of [int, float]
-    dim     : integer
-    min     : integer
-    max     : integer (equivalent to num_beads)
+    dim     : integer (number of sets of values)
+    length  : number of elements in each set of values 
+    min     : min value over all arrays 
+    max     : max value over all arrays 
     values :
         - id : name needed to retrieve data 
           url: relative path to the data file 
