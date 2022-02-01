@@ -65,12 +65,11 @@ x,y,z
 ...
 ```
 
-## Array data (array.yaml and array.npz)
+## Array data (array.yaml and array.npz or array.csv)
 
-An array is specified by two files: a `array.yaml` file and a `array.npz` 
-file. The `array.yaml` file is metadata about the array, and the 
-`array.npz` file is a compressed python python file containing float
-arrays as specified in the associated `array.yaml`.
+An array is specified by two files: a `array.yaml` file (specifying
+metadata about the array) and a file containing the data 
+(either a compressed python `array.npz` or text-based `array.csv` file). 
 
 Specification of the `array.yaml` file:
 ```
@@ -83,12 +82,16 @@ data    :
     min     : integer
     max     : integer (equivalent to num_beads)
     values :
-        - id : name expected by python when extracting data
-          url: relative path to the npz file
-        - id : name expected by python when extracting data
-          url: relative path to the npz file
+        - id : name needed to retrieve data 
+          url: relative path to the data file 
+        - id : name needed to retrieve data 
+          url: relative path to the data file 
         ...
 ```
+
+The `id` used to retrieve the data is either the name used by 
+python's compressed array reader to access the data in the `array.npz`
+file, or the column name of the data in the `array.csv` file.
 
 ## Annotation `csv` file
 
