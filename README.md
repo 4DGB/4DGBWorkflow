@@ -65,7 +65,7 @@ x,y,z
 ...
 ```
 
-## Array data (array.yaml and array.npz or array.csv)
+## Array data
 
 An array is specified by two files: a `array.yaml` file (specifying
 metadata about the array) and a file containing the data 
