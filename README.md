@@ -94,6 +94,17 @@ The `id` used to retrieve the data is either the name used by
 python's compressed array reader to access the data in the `array.npz`
 file, or the column name of the data in the `array.csv` file.
 
+An `array.csv` file looks like this (where `time_0` and `time_1` are the `value:id` names:
+
+```
+time_0,time_1
+0.0,0.0
+0.1,0.0001
+0.2,0.0002
+0.3,0.0003
+...
+```
+
 ## Annotation `csv` file
 
 A general file for providing annotations for the workflow's sequence.
