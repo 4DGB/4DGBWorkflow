@@ -20,18 +20,18 @@ sequence:
     name:       name of sequence        (required)
     data:       url of sequence         (required) 
 
-arrays:
-    - name:     array one               (optional)
+tracks:
+    - name:     tracks one              (optional)
       data:     somefile.yaml           (required)
-    - name:     array two               (optional)
+    - name:     tracks two              (optional)
       data:     somefile.yaml           (required)
     - ...
 
 datasets:
-    - name:     Name of first dataset   (required)
-      hic:      data01.hic              (required)
-    - name:     Name of second dataset  (required)
-      hic:      data02.hic              (required)
+    - name:     Name of first dataset   (optional)
+      hic:      somefile.ext            (required)
+    - name:     Name of second dataset  (optional)
+      hic:      somefile.ext            (required)
 ```
 
 # Computed Values
@@ -65,23 +65,23 @@ x,y,z
 ...
 ```
 
-## Array data
+## Track data
 
-An array is specified by two files: a `array.yaml` file (specifying
-metadata about the array) and a file containing the data 
-(either a compressed python `array.npz` or text-based `array.csv` file). 
+A track is specified by two files: a `track.yaml` file (specifying
+metadata about the track) and a file containing the data 
+(either a compressed python `track.npz` or text-based `track.csv` file). 
 
-Specification of the `array.yaml` file:
+Specification of the `track.yaml` file:
 ```
-name    : name of the array
+name    : name of the track
 type    : structure
-version : version of the array metadata file
+version : version of the track metadata file
 data    :
     type    : string value, one of [int, float]
     dim     : integer (number of sets of values)
     length  : number of elements in each set of values 
-    min     : min value over all arrays 
-    max     : max value over all arrays 
+    min     : min value over all track 
+    max     : max value over all track 
     values :
         - id : name needed to retrieve data 
           url: relative path to the data file 
@@ -91,10 +91,10 @@ data    :
 ```
 
 The `id` used to retrieve the data is either the name used by 
-python's compressed array reader to access the data in the `array.npz`
-file, or the column name of the data in the `array.csv` file.
+python's compressed array reader to access the data in the `track.npz`
+file, or the column name of the data in the `track.csv` file.
 
-An `array.csv` file looks like this (where `time_0` and `time_1` are the `value:id` names:
+An `track.csv` file looks like this (where `time_0` and `time_1` are the `value:id` names:
 
 ```
 time_0,time_1
