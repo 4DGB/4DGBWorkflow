@@ -1,0 +1,7 @@
+venv/
+test_project/
+test_out/
+__pycache__/
+.vscode/
+.ninja_log
+*.ninja

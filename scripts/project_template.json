@@ -1,0 +1,141 @@
+{
+
+"schema": {
+    "version": "0.5"
+},
+
+"project": { 
+    "name": "",
+    "creator": {
+        "givenName" : "",
+        "familyName" : ""
+    },
+    "description" : "",
+    "interval" : 200000,
+    "created" : ""
+},
+
+"data" : {
+    "sequence": {
+        "url"  : "",
+        "type" : "",
+        "name" : "",
+        "citation": "",
+        "license": ""
+    },
+    "array" : [],
+    "md-contact-map": [],
+    "structure": []
+},
+
+"datasets": [],
+
+"application" : {
+    "gtk": {
+        "application" : {
+            "name": "viewer",
+            "version" : "0.5"
+        },
+        "controlpanel": {
+            "variable" : {
+                "current" : 0
+            },
+            "colormap" : {
+                "current" : "grayscale" 
+            },
+            "gene" : {
+                "current" : "",
+                "favorites" : []
+            },
+            "location" : {
+                "current" : "",
+                "favorites" : []
+            }
+        },
+        "contactmapcanvas": {
+            "width": 300,
+            "height": 300,
+            "magnify": 1,
+            "threshold" : 0.1,
+            "background" : "0xFFFFFF",
+            "colormap" : "rainbow"
+        },
+        "geometrycanvas" : {
+            "width":  500, 
+            "height": 500,
+            "scene": {
+                "background" : "0xFFFFFF",
+                "camera":   { 
+                    "fov":      10, 
+                    "aspect":   1, 
+                    "near":     1, 
+                    "far":      1000,  
+                    "center":   [0.0, 0.0, 0.0],
+                    "position": [0.0, 0.0, 100.0] 
+                },
+                "lights": [
+                    { 
+                        "label"     : "Directional Light 0",
+                        "type"      : "directional",
+                        "color"     : "0xFDF4DC",
+                        "distance"  : 0,
+                        "decay"     : 1,
+                        "position"  : [20,0,20], 
+                        "intensity" : 0.8,
+                        "shadow"    : {
+                            "castshadow" : true,
+                            "camera" : {
+                                "near"  : 0.5,
+                                "far"   : 500,
+                                "top"   :  10,
+                                "bottom": -10,
+                                "left"  :  10,
+                                "right" : -10
+                            }
+                        }
+                    },
+                    {
+                        "label"     : "Ambient Light 0",
+                        "type"      : "ambient",
+                        "color"     : "0xFDF4DC",
+                        "intensity" : 0.25
+                    }
+                ]
+            },
+            "geometry": {
+                "attributes" : {
+                    "interval" : 200000
+                },
+                "colormap" : {
+                    "name" : "grayscale",
+                    "divs" : 512,
+                    "highlight-color": "0x67F0D9",
+                    "opacity-clamp" : 0.2
+                },
+                "segment" : {
+                    "glyph" : {
+                        "type" : "curve",
+                        "color": "0x0091ea",
+                        "endpoint":{ 
+                            "radius":   0.175, 
+                            "segments": 16
+                        },
+                        "span":    { 
+                            "tension"       : 1.0,
+                            "radius"        : 0.1,
+                            "num-points"    : 10,
+                            "num-sections"  :  8 
+                        },
+                        "ghost" : {
+                            "opacity" : 0.2
+                        },
+                        "skeleton" : {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+}
