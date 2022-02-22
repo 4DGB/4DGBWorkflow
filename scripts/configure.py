@@ -82,7 +82,7 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
 
     # Run LAMMPS
     WRITER.rule(
-        'lammps', 'hic2structure.py -vv --output ${out}/out --directory $out $in',
+        'lammps', 'hic2structure.py -v --output ${out}/out --directory $out $in',
         description="Run LAMMPS Simulation"
     )
 
@@ -139,7 +139,7 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
     )
 
     # Files to copy
-    for path in [ 'gtkserver.py', 'gunicorn.conf.py', 'static', 'version.md' ]:
+    for path in [ 'gtkserver.py', 'static', 'version.md' ]:
         inpath  = BROWSER_DIR.joinpath('server', path)
         outpath = OUTDIR.joinpath(path)
         WRITER.build(
