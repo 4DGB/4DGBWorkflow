@@ -1,0 +1,6 @@
+[submodule "submodules/4DGB"]
+	path = submodules/4DGB
+	url = git@github.com:lanl/4DGB.git
+[submodule "submodules/3DStructure"]
+	path = submodules/3DStructure
+	url = git@github.com:4DGB/3DStructure.git

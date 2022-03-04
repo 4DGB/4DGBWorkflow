@@ -43,10 +43,10 @@ if not OUTDIR.is_dir():
 # Set project parameters
 OUTPUT['project']['name'] = INPROJ['name']
 
-INTERVAL = INPROJ['interval'] if 'interval' in INPROJ else 200000
+INTERVAL = INPROJ.get('interval', 200000)
 OUTPUT['project']['interval'] = INTERVAL
 
-BLACKOUT = INPROJ['blackout'] if 'blackout' in INPROJ else []
+BLACKOUT = INPROJ.get('blackout', [])
 
 # Fill out data sets
 # The actual files referenced here are generated in the build process

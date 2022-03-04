@@ -59,28 +59,17 @@ RUN mkdir -p /var/lib/nginx /var/log/nginx \
 COPY ./requirements.txt ./requirements.txt
 RUN pip3 install -r ./requirements.txt
 
-# Install 3DStructure script
-ARG STRUCTURE_REV=74948af3e210b3bc15310dd09ac4a99be925da8d
-ENV STRUCTURE_REV ${STRUCTURE_REV}
-ENV GIT_SSH_COMMAND "ssh -o StrictHostKeyChecking=no"
-RUN --mount=type=ssh,required=true \
-     mkdir -p /opt/git/3DStructure \
-     && git clone git@github.com:4DGB/3DStructure.git /opt/git/3DStructure
-RUN cd /opt/git/3DStructure/src \
-    && git switch -d "${STRUCTURE_REV}" \
-    && python3 setup.py install
-
-# Clone browser repo
-ARG BROWSER_REV=18582b98e56b6208825f66917c9ac609eb643af5
-ENV BROWSER_REV ${BROWSER_REV}
-RUN mkdir -p /opt/git/4dgb \
-    && git clone https://github.com/lanl/4DGB.git /opt/git/4dgb
 # Build Browser JS
+COPY submodules/4DGB /opt/git/4dgb
 RUN cd /opt/git/4dgb \
-    && git switch -d "${BROWSER_REV}" \
     && npm install \
     && npx webpack --config client-js/webpack.config.js \
     && cp  client-js/gtk-dist/gtk.min.js server/static/gtk/js/gtk.min.js
+
+# Install hic2structure.py script
+COPY submodules/3DStructure /opt/git/3DStructure
+RUN cd /opt/git/3DStructure/src \
+    && python3 setup.py install
 
 # Copy files
 COPY ./scripts ./scripts

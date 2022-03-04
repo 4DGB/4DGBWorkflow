@@ -16,6 +16,7 @@
 
 import sys
 from pathlib import Path
+from shlex import quote
 import typing as T
 from typing import TypedDict
 
@@ -46,7 +47,10 @@ except StopIteration:
 with open(PROJECT_FILE, 'r') as f:
     SPEC = yaml.load(f, Loader=Loader)
 
+# Output directory
 OUTDIR = OUTDIR.resolve()
+
+# Project destination directory (within output directory)
 PROJECT_DIR = OUTDIR.joinpath('static','project')
 
 ########################
@@ -70,6 +74,15 @@ def parse_hic(t: T.Tuple[int, T.Dict]) -> Hic:
 
 HIC_FILES = list(map( parse_hic, enumerate(SPEC['datasets']) ))
 
+PROJECT_SPEC = SPEC['project']
+INTERVAL   = PROJECT_SPEC.get('interval', 200000)
+CHROMOSOME = PROJECT_SPEC.get('chromosome', 'X')
+THRESHOLD  = PROJECT_SPEC.get('threshold', 2.0)
+
+########################
+# WRITE NINJA FILE
+########################
+
 OUTDIR.mkdir(exist_ok=True)
 with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
 
@@ -82,33 +95,35 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
 
     # Run LAMMPS
     WRITER.rule(
-        'lammps', 'hic2structure.py -v --output ${out}/out --directory $out $in',
+        'lammps', f'hic2structure.py -v -r {quote(str(INTERVAL))} -c {quote(str(CHROMOSOME))} -t {quote(str(THRESHOLD))}'
+        ' --output ${out}/out --directory $out $in',
+                # 👆 this part isn't a python formatter, it's for Ninja
         description="Run LAMMPS Simulation"
     )
 
     # Generate project.json
-    project_json_script = Path(__file__).parents[0].joinpath("project_yaml2json.py").resolve()
+    project_json_script = quote(str(
+        Path(__file__).parents[0].joinpath("project_yaml2json.py").resolve()
+    ))
     WRITER.rule(
-        'project', f'"{project_json_script}" "$in" "{PROJECT_DIR}"',
+        'project', f'"{project_json_script}" "$in" "{quote(str(PROJECT_DIR))}"',
         description="Generate project.json"
     )
 
     # Copy files into output directory
     WRITER.rule(
-        'copy', f'cp -rt "{OUTDIR}" $in',
+        'copy', f'cp -rt "{quote(str(OUTDIR))}" $in',
         description="Copy files into project directory"
     )
 
     # Generate SQLite Database
-    dbpop_script = BROWSER_DIR.joinpath('bin', 'db_pop')
+    dbpop_script = quote(str(
+        BROWSER_DIR.joinpath('bin', 'db_pop')
+    ))
     WRITER.rule(
-        'dbpop', f'python3 "{dbpop_script}" "{PROJECT_DIR}" "{OUTDIR}"',
-        description="Generate project database" #            👆
-                                                # this second argument
-                                                # to the db_pop script specifies 
-                                                # the server directory, we
-                                                # just need it to find the
-                                                # 'version.md' file
+        'dbpop', f'python3 "{dbpop_script}" "{quote(str(PROJECT_DIR))}" "{quote(str(OUTDIR))}"',
+                                            # 👆-project output directory  👆-server directory
+        description="Generate project database"
     )
 
     ########################

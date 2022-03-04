@@ -9,8 +9,9 @@ A dockerized application implementing an end-to-end workflow to process Hi-C dat
 ```yaml
 project:
   name: "My Project"
-  # 'interval' is optional (defaults to 200000)
-  interval: 200000
+  interval: 200000 # optional (defaults to 200000)
+  chromosome: X    # optional (defaults to 'X')
+  threshold:  2.0  # optional (defaults to 2.0)
 
 datasets:
   - name: "Data 01"
@@ -21,13 +22,19 @@ datasets:
 
 *See the [File Specification Document](doc/file_specs.md) for full details on what can be included in the input data*
 
-2. Build the Docker image. **NOTE:** For now, this requires access to a private GitHub repository, so a little magic is needed to build it: You must have a Docker version capable of using BuildKit, and a running ssh agent with keys that will let you access the private repo. With that, you can build the image with this command:
+2. Checkout submodules
 
 ```sh
-DOCKER_BUILDKIT=1 docker build -t 4dgbworkflow --ssh default .
+git submodule update --init
 ```
 
-3. Run the browser!
+3. Build the Docker image.
+
+```sh
+docker build -t 4dgbworkflow .
+```
+
+4. Run the browser!
 
 ```sh
 ./run_project /path/to/project/directory/
