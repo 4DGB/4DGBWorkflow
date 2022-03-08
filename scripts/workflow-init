@@ -33,5 +33,5 @@ else:
     with open(args.workflow, 'r') as wyaml:
         workflow = yaml.load(wyaml, Loader=yaml.Loader)
 
-    print(workflow)
+    print("Loaded workflow \'{}\'.".format(args.workflow))
 
