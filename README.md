@@ -2,7 +2,7 @@
 
 ![](doc/workflow.png)
 
-A dockerized application implementing an end-to-end workflow to process Hi-C data files and displaying their structures in an instance of the [4DGB Browser](https://github.com/lanl/4DGB).
+A dockerized application implementing an end-to-end workflow to process Hi-C data files and displaying their structures in an instance of the [4D Genome Browser](https://github.com/lanl/4DGB).
 
 The workflow takes ```.hic``` data, processes the data and creates a running server that can be used to view the data with a web browser. The system takes advantage of previous runs, so if you've already computed some data, it won't be recomputed the next time the workflow is run. 
 
