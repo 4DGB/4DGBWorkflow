@@ -23,4 +23,4 @@ jobs:
     - name: Make the release 
       run: |
         pip install pyyaml 
-        ./scrips/workflow-init --help
+        ./scripts/workflow-init --help
