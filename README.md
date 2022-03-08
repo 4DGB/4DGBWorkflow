@@ -40,7 +40,7 @@ docker build -t 4dgbworkflow .
 ./run_project /path/to/project/directory/
 ```
 
-Example output:
+**Example output:**
 ```
 $ ./run_project ./example_project
 [>]: Building project... (this may take a while)
@@ -55,3 +55,7 @@ $ ./run_project ./example_project
 ```
 
 If this is the first time running a project, this may take a while, since it needs to run a molecular dynamics simulation with LAMMPS on your input data. The next time you run it, it won't need to run the simulation again. If you update the input files, then the simulation will automatically be re-run!
+
+**Example Screenshot**
+
+![](doc/example_screen.png)
