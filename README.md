@@ -6,7 +6,7 @@ A dockerized application implementing an end-to-end workflow to process Hi-C dat
 
 The workflow takes ```.hic``` data, processes the data and creates a running server that can be used to view the data with a web browser. The system takes advantage of previous runs, so if you've already computed some data, it won't be recomputed the next time the workflow is run. 
 
-## Example
+## First Example
 
 This repository contains the first end-to-end example of the 4D Genome Browser workflow. Here's how to get started:
 
@@ -48,3 +48,10 @@ $ ./run_project ./example_project
 5. Run Chrome browser on the running server at this address: ```http://localhost:8000/compare.html?gtkproject=example_project```. You'll see the following result (may need to resize the browser window):
 
 ![](doc/example_screen.png)
+
+## General Instructions
+
+More general instructions for creating workflows from scratch are underdevelopment.
+
+- The [File Specification Document](doc/file_specs.md) shows full details on what can be included in the input data.
+
