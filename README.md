@@ -45,6 +45,6 @@ $ ./run_project ./example_project
         #
 ```
 
-5. Run Chrome browser on the running server at this address: ```http://localhost:8000/compare.html?gtkproject=example_project```
+5. Run Chrome browser on the running server at this address: ```http://localhost:8000/compare.html?gtkproject=example_project```. You'll see the following result (may need to resize the browser window):
 
 ![](doc/example_screen.png)
