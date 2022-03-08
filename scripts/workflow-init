@@ -4,6 +4,7 @@ import argparse
 import textwrap
 import yaml
 import sys
+import os
 
 # ----------
 # set up command line args
@@ -22,6 +23,10 @@ parser.add_argument( '--workflow',
 
 args = parser.parse_args()
 
+def get_project_directory(args):
+
+    return "this_new_name"
+
 # read the input file
 try:
     wyaml = open(args.workflow, 'r')
@@ -34,4 +39,9 @@ else:
         workflow = yaml.load(wyaml, Loader=yaml.Loader)
 
     print("Loaded workflow \'{}\'.".format(args.workflow))
+    newdir = get_project_directory(args)
+    if not os.path.exists(newdir):
+        os.makedirs(newdir)
+    else:
+        print("Directory already exists")
 
