@@ -5,3 +5,4 @@ __pycache__/
 .vscode/
 .ninja_log
 *.ninja
+.build/

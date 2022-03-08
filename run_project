@@ -60,7 +60,13 @@ if [ -z "$PROJECT" ] ; then
     exit 1
 fi
 
-PROJECT="$(realpath "$PROJECT")"
+# Gotta define our own function because not all systems will have realpath(1) installed.
+# Thanks, StackOverflow! https://stackoverflow.com/a/3915420/2827258
+abspath() {
+  echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+}
+
+PROJECT="$(abspath "$PROJECT")"
 if [ -z "$NAME_OVERRIDE" ] ; then
     NAME="$(basename "$PROJECT")"
 fi

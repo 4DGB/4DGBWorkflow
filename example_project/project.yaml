@@ -1,0 +1,23 @@
+project:
+  name: "test_project"
+  chromosome: 'chr22'
+  blackout:
+    - [1, 60]
+
+datasets:
+  - name: "data_01"
+    data: "ENCLB571GEP.chr22.200kb.h5.hic"
+  - name: "data_02"
+    data: "ENCLB571GEP.chr22.200kb.h5.hic"
+
+tracks:
+  - name: "ATAC"
+    data: "array/atac.json"
+  - name: "H3K27ac"
+    data: "array/h3k27ac.json"
+  - name: "H3K9me3"
+    data: "array/h3k9me3.json"
+  - name: "PC1"
+    data: "array/pc1.json"
+  - name: "PC2"
+    data: "array/pc2.json"

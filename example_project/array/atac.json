@@ -1,0 +1,22 @@
+{
+    "name": "ATAC",
+    "type": "structure",
+    "version": "0.1",
+    "tags": [],
+    "data": {
+        "type": "int",
+        "dim": 1,
+        "min": 0,
+        "max": 1.2889,
+        "values": [
+            {
+                "id": "ATAC",
+                "url": "array/arr.npz"
+            },
+            {
+                "id": "ATAC",
+                "url": "array/arr.npz"
+            }
+        ]
+    }
+}

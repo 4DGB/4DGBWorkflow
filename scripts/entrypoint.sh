@@ -25,7 +25,7 @@ if [ "$MODE" = "production" ] ; then
     set -e
     gosu "$NEWUID:$NEWGID" ./scripts/docker-setup.sh /project
 elif [ "$MODE" = "local" ] ; then
-    echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project..." >&2
+    echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
 
     # Run setup
     if ! gosu "$NEWUID:$NEWGID" \

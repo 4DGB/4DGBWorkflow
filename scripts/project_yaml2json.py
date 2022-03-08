@@ -96,6 +96,13 @@ for (i, dataset) in enumerate(INPUT['datasets']):
         'epigenetics': i
     })
 
+# Fill out track data
+for (i, track) in enumerate( INPUT.get('tracks', []) ):
+    OUTPUT['data']['array'].append({
+        'id': i,
+        'url': track['data']
+    })
+
 OUTFILE=OUTDIR.joinpath("project.json")
 with open(OUTFILE, 'w') as f:
     json.dump(OUTPUT, f)

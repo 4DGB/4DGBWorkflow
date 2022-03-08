@@ -1,4 +1,8 @@
-# Input Parameters
+# Project Specification
+
+⚠ This specification is a work in progress. Not all features specified here have been implemented yet and other features are subject to change.
+
+## Input Parameters
 
 The input to the workflow is a directory with a file named `workflow.yaml` or `project.yaml` with the following values:
 
@@ -27,7 +31,7 @@ datasets:
       hic:      somefile.ext            (required)
 ```
 
-# Computed Values
+## Computed Values
 
 Quantities that are computed from input.
 
@@ -37,9 +41,9 @@ num_beads = (num base pairs in sequence)/(project:interval)
 
 - **`beads`** a 1-based `integer` array of size `num_beads`, with IDs that go from 1 to (num_beads - 1) The first bead is at sequence position `interval`. Therefore, the first `[1, (interval - 1)]` beads are not represented in the 3D structure file.
 
-# File Specifications
+## File Specifications
 
-## Structure `.csv` file
+### Structure `.csv` file
 
 A structure `.csv` file is a three-column csv file in which the first line names the coordinate `[x,y,z]` of the structure point. The ID of the point is the number of the line, where the first data line is ID `1`, and the ids increment by one until the last line. The file has `num_beads + 1` lines, the first of which is the name of the coordinate. There are three coordinates, and their order is not specified, but all three must be present. 
 
@@ -51,7 +55,7 @@ x,y,z
 ...
 ```
 
-## Track data
+### Track data
 
 A track is specified by two files: a `track.yaml` file (specifying metadata about the track) and a file containing the data (either a compressed python `track.npz` or text-based `track.csv` file). 
 
@@ -87,7 +91,7 @@ time_0,time_1
 ...
 ```
 
-## Annotation `csv` file
+### Annotation `csv` file
 
 A general file for providing annotations for the workflow's sequence.
 

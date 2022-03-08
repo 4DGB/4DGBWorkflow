@@ -42,14 +42,13 @@ docker build -t 4dgbworkflow .
 
 Example output:
 ```
-$ ./run_project ./my_project
-[>]: Building project...
-[3/7] Copy files to project directory
+$ ./run_project ./example_project
+[>]: Building project... (this may take a while)
 
         #
         # Ready!
         # Open your web browser and visit:
-        # http://localhost:8000/compare.html?gtkproject=my_project
+        # http://localhost:8000/compare.html?gtkproject=example_project
         #
         # Press [Ctrl-C] to exit
         #

@@ -1,2 +1,13 @@
+.*/
 venv/
 test_project*/
+test_out/
+testing/
+doc/
+node_modules/
+*.egg-info
+submodules/4DGB/release/
+submodules/4DGB/client-py/
+submodules/4DGB/projects/
+submodules/4DGB/schema/
+submodules/4DGB/testing/

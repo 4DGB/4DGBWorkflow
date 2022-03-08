@@ -19,6 +19,7 @@ from pathlib import Path
 from shlex import quote
 import typing as T
 from typing import TypedDict
+import json
 
 import yaml
 from yaml import Loader
@@ -36,6 +37,7 @@ if len(sys.argv) < 4:
 [ INDIR, OUTDIR, BROWSER_DIR ] = map(Path, sys.argv[1:4])
 
 # Find project file
+INDIR = INDIR.resolve()
 search = [ INDIR.joinpath(f) for f in ['workflow.yaml', 'project.yaml'] ]
 try:
     PROJECT_FILE = next( f for f in search if f.is_file() )
@@ -73,6 +75,22 @@ def parse_hic(t: T.Tuple[int, T.Dict]) -> Hic:
     }
 
 HIC_FILES = list(map( parse_hic, enumerate(SPEC['datasets']) ))
+
+# A list of the data files related to array/track data
+TRACK_DATA_FILES = set()
+if 'tracks' in SPEC:
+    for track in SPEC['tracks']:
+        # Each track has an extra json file associated with it
+        trackfile = Path(track['data'])
+        TRACK_DATA_FILES.add(trackfile)
+
+        # That extra file specifies the locations of the acutal
+        # array data files
+        trackfile_path = INDIR.joinpath(trackfile)
+        with open(trackfile_path, 'r') as f:
+            trackmeta = json.load(f)
+            for data in trackmeta['data']['values']:
+                TRACK_DATA_FILES.add(data['url'])
 
 PROJECT_SPEC = SPEC['project']
 INTERVAL   = PROJECT_SPEC.get('interval', 200000)
@@ -112,8 +130,14 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
 
     # Copy files into output directory
     WRITER.rule(
-        'copy', f'cp -rt "{quote(str(OUTDIR))}" $in',
+        'copytodir', f'cp -rt "{quote(str(OUTDIR))}" $in',
         description="Copy files into project directory"
+    )
+
+    # Plain ol' file copy
+    WRITER.rule(
+        'copy', 'cp $in $out',
+        description="Copy file"
     )
 
     # Generate SQLite Database
@@ -157,6 +181,16 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
     for path in [ 'gtkserver.py', 'static', 'version.md' ]:
         inpath  = BROWSER_DIR.joinpath('server', path)
         outpath = OUTDIR.joinpath(path)
+        WRITER.build(
+            outputs=str(outpath),
+            rule='copytodir',
+            inputs=str(inpath)
+        )
+
+    # Copy track data
+    for file in TRACK_DATA_FILES:
+        inpath = INDIR.joinpath(file)
+        outpath = PROJECT_DIR.joinpath(file)
         WRITER.build(
             outputs=str(outpath),
             rule='copy',

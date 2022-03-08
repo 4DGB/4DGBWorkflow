@@ -1,0 +1,22 @@
+{
+    "name": "PC1",
+    "type": "structure",
+    "version": "0.1",
+    "tags": [],
+    "data": {
+        "type": "int",
+        "dim": 1,
+        "min": 0,
+        "max": 0.130930949385,
+        "values": [
+            {
+                "id": "PC1",
+                "url": "array/arr.npz"
+            },
+            {
+                "id": "PC1",
+                "url": "array/arr.npz"
+            }
+        ]
+    }
+}

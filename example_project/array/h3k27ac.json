@@ -1,0 +1,22 @@
+{
+    "name": "H3K27ac",
+    "type": "structure",
+    "version": "0.1",
+    "tags": [],
+    "data": {
+        "type": "int",
+        "dim": 1,
+        "min": 0,
+        "max": 2.50863,
+        "values": [
+            {
+                "id": "H3K27ac",
+                "url": "array/arr.npz"
+            },
+            {
+                "id": "H3K27ac",
+                "url": "array/arr.npz"
+            }
+        ]
+    }
+}

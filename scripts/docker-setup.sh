@@ -23,6 +23,7 @@ python3 ./scripts/configure.py "$PROJECT" "$OUTPUT" "/opt/git/4dgb/"
 
 cd "$OUTPUT"
 
-ninja
+# Ninja's output only confuses end-users, so we just hide it
+ninja > /dev/null
 
 gunicorn --config "$GUNICORN_CONF"

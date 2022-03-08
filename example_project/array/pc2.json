@@ -1,0 +1,22 @@
+{
+    "name": "PC2",
+    "type": "structure",
+    "version": "0.1",
+    "tags": [],
+    "data": {
+        "type": "int",
+        "dim": 1,
+        "min": -0.107798333766,
+        "max": 0.195768214658,
+        "values": [
+            {
+                "id": "PC2",
+                "url": "array/arr.npz"
+            },
+            {
+                "id": "PC2",
+                "url": "array/arr.npz"
+            }
+        ]
+    }
+}

@@ -114,17 +114,15 @@
                 },
                 "segment" : {
                     "glyph" : {
-                        "type" : "curve",
+                        "type" : "arrow",
                         "color": "0x0091ea",
                         "endpoint":{ 
                             "radius":   0.175, 
                             "segments": 16
                         },
                         "span":    { 
-                            "tension"       : 1.0,
-                            "radius"        : 0.1,
-                            "num-points"    : 10,
-                            "num-sections"  :  8 
+                            "radius-beg": 0.1,
+                            "radius-end": 0.02
                         },
                         "ghost" : {
                             "opacity" : 0.2
