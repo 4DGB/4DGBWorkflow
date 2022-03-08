@@ -40,8 +40,17 @@ else:
     workflow = {}
     with open(args.workflow, 'r') as wyaml:
         workflow = yaml.load(wyaml, Loader=yaml.Loader)
-
     print("Loaded workflow \'{}\'.".format(args.workflow))
+
+    print("Datasets")
+    for d in workflow["datasets"]:
+        print("  {}:{}".format(d["name"], d["hic"]))
+
+    print("Tracks")
+    for t in workflow["tracks"]:
+        print("  {}:{}".format(t["name"], t["data"]))
+
+    # make the new directory
     newdir = get_project_directory(args)
     print(newdir)
     if not os.path.exists(newdir):
