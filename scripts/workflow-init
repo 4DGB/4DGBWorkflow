@@ -17,6 +17,9 @@ parser = argparse.ArgumentParser(
                     description=textwrap.dedent(desc)
                     )
 
+parser.add_argument( '--destination',
+                        default='./',
+                        help='destination directory for new project')
 parser.add_argument( '--workflow', 
                         default='workflow.yaml',
                         help='input workflow file')
@@ -25,7 +28,7 @@ args = parser.parse_args()
 
 def get_project_directory(args):
 
-    return "this_new_name"
+    return os.path.join(args.destination, "this_new_name")
 
 # read the input file
 try:
@@ -40,6 +43,7 @@ else:
 
     print("Loaded workflow \'{}\'.".format(args.workflow))
     newdir = get_project_directory(args)
+    print(newdir)
     if not os.path.exists(newdir):
         os.makedirs(newdir)
     else:
