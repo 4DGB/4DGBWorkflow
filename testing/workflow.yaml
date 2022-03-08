@@ -8,14 +8,18 @@ sequence:
     name:       Thisname 
     data:       url.com 
 
-tracks:
-    - name:     one 
-      data:     somefile.yaml
-    - name:     two 
-      data:     somefile.yaml
-
 datasets:
     - name:     This name 
       hic:      somefile.ext
+      tracks:
+        - name: one 
+          data: somefile.yaml
+        - name: two 
+          data: somefile.yaml
     - name:     Another name 
       hic:      somefile.ext
+      tracks:
+        - name: one 
+          data: somefile.yaml
+        - name: two 
+          data: somefile.yaml

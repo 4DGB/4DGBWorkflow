@@ -45,10 +45,9 @@ else:
     print("Datasets")
     for d in workflow["datasets"]:
         print("  {}:{}".format(d["name"], d["hic"]))
-
-    print("Tracks")
-    for t in workflow["tracks"]:
-        print("  {}:{}".format(t["name"], t["data"]))
+        print("    tracks")
+        for t in d["tracks"]:
+            print("      {}:{}".format(t["name"], t["data"]))
 
     # make the new directory
     newdir = get_project_directory(args)
