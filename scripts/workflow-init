@@ -48,4 +48,5 @@ else:
         os.makedirs(newdir)
     else:
         print("Directory already exists")
+        sys.exit(1)
 
