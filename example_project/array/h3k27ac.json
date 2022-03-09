@@ -11,11 +11,11 @@
         "values": [
             {
                 "id": "H3K27ac",
-                "url": "array/arr.npz"
+                "url": "array/arr0.npz"
             },
             {
                 "id": "H3K27ac",
-                "url": "array/arr.npz"
+                "url": "array/arr1.npz"
             }
         ]
     }

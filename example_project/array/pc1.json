@@ -6,16 +6,16 @@
     "data": {
         "type": "int",
         "dim": 1,
-        "min": 0,
+        "min": -0.114066572992,
         "max": 0.130930949385,
         "values": [
             {
                 "id": "PC1",
-                "url": "array/arr.npz"
+                "url": "array/arr0.npz"
             },
             {
                 "id": "PC1",
-                "url": "array/arr.npz"
+                "url": "array/arr1.npz"
             }
         ]
     }

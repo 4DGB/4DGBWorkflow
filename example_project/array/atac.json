@@ -11,11 +11,11 @@
         "values": [
             {
                 "id": "ATAC",
-                "url": "array/arr.npz"
+                "url": "array/arr0.npz"
             },
             {
                 "id": "ATAC",
-                "url": "array/arr.npz"
+                "url": "array/arr1.npz"
             }
         ]
     }

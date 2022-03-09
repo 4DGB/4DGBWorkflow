@@ -5,10 +5,10 @@ project:
     - [1, 60]
 
 datasets:
-  - name: "data_01"
+  - name: "0 Hours"
     data: "ENCLB571GEP.chr22.200kb.h5.hic"
-  - name: "data_02"
-    data: "ENCLB571GEP.chr22.200kb.h5.hic"
+  - name: "12 Hours"
+    data: "ENCLB870JCZ.chr22.200kb.12.h5.hic"
 
 tracks:
   - name: "ATAC"
