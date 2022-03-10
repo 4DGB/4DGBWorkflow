@@ -76,4 +76,4 @@ docker run --rm -it \
     -v "$PROJECT:/project" \
     -e "NEWUID=$(id -u)" \
     -e "NEWGID=$(id -g)" \
-    4dgbworkflow "$PORT" "$NAME"
+    4dgb/workbench:latest "$PORT" "$NAME"

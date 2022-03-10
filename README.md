@@ -6,34 +6,47 @@ A dockerized application implementing an end-to-end workflow to process Hi-C dat
 
 The workflow takes ```.hic``` data, processes the data and creates a running server that can be used to view the data with a web browser. The system takes advantage of previous runs, so if you've already computed some data, it won't be recomputed the next time the workflow is run. 
 
-## First Example
+## Setting up Input Data
 
-This repository contains the first end-to-end example of the 4D Genome Browser workflow. Here's how to get started:
+1. Create a directory to contain all of your input data. In it, create a `workflow.yaml` file with the following format:
 
-1. Install Docker. Instructions are [here](https://docs.docker.com/get-docker).
+```yaml
+project:
+  name: "My Project"
+  interval: 200000 # optional (defaults to 200000)
+  chromosome: X    # optional (defaults to 'X')
+  threshold:  2.0  # optional (defaults to 2.0)
 
-2. Clone this repository:
-
-```sh
-git clone --recursive https://github.com/4DGB/4DGBWorkflow.git 
+datasets:
+  - name: "Data 01"
+    hic:  "path/to/data_01.hic"
+  - name: "Data 02"
+    hic:  "path/to/data_02.hic"
 ```
 
-3. CD into the repository and build the Docker image. This may take a bit of time, but you will see messages in the shell while it's running:
+*See the [File Specification Document](doc/file_specs.md) for full details on what can be included in the input data*
+
+2. Checkout submodules
 
 ```sh
-cd 4DGBWorkflow
-docker build -t 4dgbworkflow .
+git submodule update --init
 ```
 
-4. Run the workflow. The result will be a running server.
+3. Build the Docker image.
 
 ```sh
-./run_project ./example_project 
+docker build -t 4dgb/workbench:latest .
+```
+
+4. Run the browser!
+
+```sh
+./4dgb-workflow /path/to/project/directory/
 ```
 
 **Example output:**
-```sh
-$ ./run_project ./example_project
+```
+$ ./4dgb-workflow ./example_project
 [>]: Building project... (this may take a while)
 
         #
@@ -45,13 +58,8 @@ $ ./run_project ./example_project
         #
 ```
 
-5. Run Chrome browser on the running server at this address: ```http://localhost:8000/compare.html?gtkproject=example_project```. You'll see the following result (may need to resize the browser window):
+If this is the first time running a project, this may take a while, since it needs to run a molecular dynamics simulation with LAMMPS on your input data. The next time you run it, it won't need to run the simulation again. If you update the input files, then the simulation will automatically be re-run!
+
+**Example Screenshot**
 
 ![](doc/example_screen.png)
-
-## General Instructions
-
-More general instructions for creating workflows from scratch are underdevelopment.
-
-- The [File Specification Document](doc/file_specs.md) shows full details on what can be included in the input data.
-
