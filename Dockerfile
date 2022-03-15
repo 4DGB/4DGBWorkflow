@@ -88,5 +88,8 @@ RUN if [ "${MODE}" = "production" ] ; then \
 # Copy configuration
 RUN cp ./conf/nginx-${MODE}.conf /etc/nginx/nginx.conf
 
+# Copy version
+COPY ./version.txt ./version.txt
+
 ENV BROWSERCONTAINER="yes"
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]

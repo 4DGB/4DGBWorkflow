@@ -16,14 +16,24 @@ set -eu
 
 PROJECT="$1"
 OUTPUT="$PROJECT/.build/"
+BROWSERDIR="/opt/git/4dgb/"
 
 GUNICORN_CONF="$(pwd)/conf/gunicorn.conf.py"
 
-python3 ./scripts/configure.py "$PROJECT" "$OUTPUT" "/opt/git/4dgb/"
+#
+# Build
+#
+
+python3 ./scripts/configure.py "$PROJECT" "$OUTPUT" "$BROWSERDIR"
 
 cd "$OUTPUT"
-
 # Ninja's output only confuses end-users, so we just hide it
 ninja > /dev/null
 
+#
+# Run
+#
+
+cd "$BROWSERDIR/server"
+export PROJECT_HOME="$OUTPUT"
 gunicorn --config "$GUNICORN_CONF"

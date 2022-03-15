@@ -52,9 +52,6 @@ with open(PROJECT_FILE, 'r') as f:
 # Output directory
 OUTDIR = OUTDIR.resolve()
 
-# Project destination directory (within output directory)
-PROJECT_DIR = OUTDIR.joinpath('static','project')
-
 ########################
 # PARSE PROJECT SPEC
 ########################
@@ -63,7 +60,7 @@ PROJECT_DIR = OUTDIR.joinpath('static','project')
 # when processed
 Hic = TypedDict('HicFile', index=int, name=str, path=Path, outdir=Path, outfiles=T.List[Path])
 def parse_hic(t: T.Tuple[int, T.Dict]) -> Hic:
-    outdir = PROJECT_DIR.joinpath(f"lammps_{t[0]}")
+    outdir = OUTDIR.joinpath(f"lammps_{t[0]}")
     return {
         'index': t[0],
         'name': t[1]['name'],
@@ -124,7 +121,7 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
         Path(__file__).parents[0].joinpath("project_yaml2json.py").resolve()
     ))
     WRITER.rule(
-        'project', f'"{project_json_script}" "$in" "{quote(str(PROJECT_DIR))}"',
+        'project', f'"{project_json_script}" "$in" "{quote(str(OUTDIR))}"',
         description="Generate project.json"
     )
 
@@ -144,9 +141,12 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
     dbpop_script = quote(str(
         BROWSER_DIR.joinpath('bin', 'db_pop')
     ))
+    server_dir = quote(str(
+        BROWSER_DIR.joinpath('server')
+    ))
     WRITER.rule(
-        'dbpop', f'python3 "{dbpop_script}" "{quote(str(PROJECT_DIR))}" "{quote(str(OUTDIR))}"',
-                                            # 👆-project output directory  👆-server directory
+        'dbpop', f'python3 "{dbpop_script}" "{quote(str(OUTDIR))}" "{server_dir}"',
+                                            # 👆-project output directory
         description="Generate project database"
     )
 
@@ -166,7 +166,7 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
         )
 
     # Generate project.json
-    project_json = PROJECT_DIR.joinpath('project.json')
+    project_json = OUTDIR.joinpath('project.json')
     WRITER.build(
         outputs=str(project_json),
         implicit=str(project_json_script),
@@ -177,20 +177,10 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
         rule='project'
     )
 
-    # Files to copy
-    for path in [ 'gtkserver.py', 'static', 'version.md' ]:
-        inpath  = BROWSER_DIR.joinpath('server', path)
-        outpath = OUTDIR.joinpath(path)
-        WRITER.build(
-            outputs=str(outpath),
-            rule='copytodir',
-            inputs=str(inpath)
-        )
-
     # Copy track data
     for file in TRACK_DATA_FILES:
         inpath = INDIR.joinpath(file)
-        outpath = PROJECT_DIR.joinpath(file)
+        outpath = OUTDIR.joinpath(file)
         WRITER.build(
             outputs=str(outpath),
             rule='copy',
@@ -199,8 +189,8 @@ with open(OUTDIR.joinpath("build.ninja"), 'w') as f:
 
     # Generate database
     WRITER.build(
-        outputs=str(PROJECT_DIR.joinpath('generated')),
-        implicit=[str(dbpop_script), str(OUTDIR.joinpath('version.md'))],
+        outputs=str(OUTDIR.joinpath('generated')),
+        implicit=[str(dbpop_script), str(BROWSER_DIR.joinpath('server','version.md'))],
         inputs=str(project_json),
         rule='dbpop'
     )

@@ -25,6 +25,11 @@ if [ "$MODE" = "production" ] ; then
     set -e
     gosu "$NEWUID:$NEWGID" ./scripts/docker-setup.sh /project
 elif [ "$MODE" = "local" ] ; then
+    echo -ne "\e[1m> Workflow version: \e[0m"
+    cat ./version.txt
+    echo -ne "\e[1m> Browser version:  \e[0m"
+    cat /opt/git/4dgb/server/version.md
+
     echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
 
     # Run setup
