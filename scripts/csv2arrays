@@ -73,7 +73,13 @@ def create_arrays_from_csv_file(metadata, destination):
         # add some missing metadata
         t["type"] = "float"
         t["fillvalue"] = "min"
-        create_structure_variable_from_csv( os.path.join(get_workflow_basedir(), metadata["file"]), 
+        filename = metadata["file"]
+        if args.verbose:
+            print("Filename: {}".format(filename))
+        if "file" in t.keys():
+            filename = t["file"]
+            print("Overriding filename: {}".format(filename))
+        create_structure_variable_from_csv( os.path.join(get_workflow_basedir(), filename),
                                             t["name"], 
                                             t["type"], 
                                             t["columns"],

@@ -21,3 +21,10 @@ tracks:
           columns: [fifth, sixth, seventh]
         - name: trackname_04
           columns: [sixth, seventh, eighth]
+    - file: input_01.csv
+      tracks: 
+        - name: trackname_05
+          columns: [first, second, third]
+        - name: trackname_06
+          file: input_02.csv
+          columns: [sixth, seventh, eighth]

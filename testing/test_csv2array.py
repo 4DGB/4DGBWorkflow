@@ -25,18 +25,28 @@ class TestCSV2Arrays(unittest.TestCase):
                         TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir))
 
         # load and inspect data
-        true_arr  = [0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6]
-        # a place we will find this data 
-        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_03/track.npz"))
-        numpy.testing.assert_array_equal(data["arr_1"], true_arr)
-        # a place we will find this data 
-        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_04/track.npz"))
-        numpy.testing.assert_array_equal(data["arr_0"], true_arr)
-
-        true_arr = [0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2]
+            # first two files
+        true_arr_2 = [0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2]
         # a place we will find this data 
         data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_01/track.npz"))
-        numpy.testing.assert_array_equal(data["arr_1"], true_arr)
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr_2)
         # a place we will find this data 
         data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_02/track.npz"))
-        numpy.testing.assert_array_equal(data["arr_0"], true_arr)
+        numpy.testing.assert_array_equal(data["arr_0"], true_arr_2)
+
+            # second two files 
+        true_arr_6  = [0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6]
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_03/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr_6)
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_04/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_0"], true_arr_6)
+
+            # test: use two different files
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_05/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr_2)
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_06/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_0"], true_arr_6)
