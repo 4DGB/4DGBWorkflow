@@ -1,5 +1,6 @@
 import unittest
 import os
+import numpy
 # import filecmp
 # import shutil
 
@@ -20,3 +21,20 @@ class TestCSV2Arrays(unittest.TestCase):
         os.system("./scripts/csv2arrays --workflow testing/data/csv2arrays/workflow.yaml --destination testing/scratch/csv2arrays")
 
         self.assertTrue(os.path.exists(TestCSV2Arrays.scratch_dir))
+
+        # load and inspect data
+        true_arr  = [0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6, 0.6, 60.6]
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, "trackname_03/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr)
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, "trackname_04/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_0"], true_arr)
+
+        true_arr = [0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2, 0.2, 20.2]
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, "trackname_01/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr)
+        # a place we will find this data 
+        data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, "trackname_02/track.npz"))
+        numpy.testing.assert_array_equal(data["arr_0"], true_arr)

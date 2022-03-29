@@ -122,7 +122,27 @@ def create_structure_variable_from_csv( fname, varname, vartype, columns, fillva
         f.write(array_metadata)
 
     os.makedirs(os.path.dirname(afile_npz), exist_ok=True)
-    numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
+    # numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
+    if args.verbose:
+        print("testing ...")
+        print(df[columns[0]])
+        print(df[columns[1]])
+    np_arr_list = []
+    for i in df.columns:
+        new_np_arr = numpy.array(df.loc[:,i])
+        np_arr_list.append(new_np_arr)
+    # numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
+    numpy.savez_compressed(afile_npz, *np_arr_list)
+    # numpy.savez_compressed(afile_npz, *df) 
+
+    data = numpy.load(afile_npz)
+    if args.verbose:
+        print("After load ...")
+        print(fname)
+        print(data.__dict__)
+        print(data["arr_0"])
+        print(data["arr_1"])
+        print(data["arr_2"])
 
 
 # create arrays

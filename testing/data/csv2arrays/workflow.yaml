@@ -12,12 +12,12 @@ tracks:
     - file: input_01.csv
       tracks: 
         - name: trackname_01
-          columns: [first, second]
+          columns: [first, second, third]
         - name: trackname_02
-          columns: [third, fourth]
+          columns: [second, third, fourth]
     - file: input_02.csv
       tracks: 
         - name: trackname_03
-          columns: [first, second]
+          columns: [fifth, sixth, seventh]
         - name: trackname_04
-          columns: [third, fourth]
+          columns: [sixth, seventh, eighth]
