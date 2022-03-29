@@ -9,15 +9,13 @@ sequence:
     data:       url of sequence
 
 tracks:
-    - name: tracks_01 
-      file: input_01.csv
+    - file: input_01.csv
       tracks: 
         - name: trackname_01
           columns: [first, second]
         - name: trackname_02
           columns: [third, fourth]
-    - name: tracks_02
-      file: input_02.csv
+    - file: input_02.csv
       tracks: 
         - name: trackname_03
           columns: [first, second]
