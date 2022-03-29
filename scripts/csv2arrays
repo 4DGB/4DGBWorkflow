@@ -78,7 +78,8 @@ def create_arrays_from_csv_file(metadata, destination):
             print("Filename: {}".format(filename))
         if "file" in t.keys():
             filename = t["file"]
-            print("Overriding filename: {}".format(filename))
+            if args.verbose:
+                print("Overriding filename: {}".format(filename))
         create_structure_variable_from_csv( os.path.join(get_workflow_basedir(), filename),
                                             t["name"], 
                                             t["type"], 
