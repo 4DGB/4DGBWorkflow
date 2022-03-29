@@ -1,9 +1,13 @@
 # Instructions for cvs2arrays script
 
-The script takes as input a ```workflow.yaml``` file that defines the ```cas``` data and a ```--destination``` directory, where it will write results.
+The script takes as input a ```workflow.yaml``` file that defines the ```cas``` data and a ```--destination``` directory, where it will write results. 
+
+The script can be called from anywhere. It assumes that the path to the ```worflow.yaml``` is a top level 'workplace' directory, and that paths defined in the ```workflow.yaml``` file are relative to that directory. The path defined by the```--destination``` command line argument assumed to be absolute or relative to the directory that the script is run from.
+
+## Arguments; calling the script
 
 ```
-csv2arrays --workflow workflow.yaml --destination some/results/directory
+csv2arrays --workflow workplace/directory/workflow.yaml --destination some/results/directory
 ```
 
 The ```workflow.yaml``` file must contain the following clause, defining how the track data is to be converted into array files:

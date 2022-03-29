@@ -18,7 +18,8 @@ class TestCSV2Arrays(unittest.TestCase):
     def test_create(self):
         """Test creating a database when the directory exists
         """
-        os.system("./scripts/csv2arrays --workflow testing/data/csv2arrays/workflow.yaml --destination testing/scratch/csv2arrays")
+        os.system("./scripts/csv2arrays --workflow {}/workflow.yaml --destination {}".format(
+                        TestCSV2Arrays.data_dir, TestCSV2Arrays.scratch_dir))
 
         self.assertTrue(os.path.exists(TestCSV2Arrays.scratch_dir))
 
