@@ -2,7 +2,7 @@
 
 The script takes as input a ```workflow.yaml``` file that defines the ```cas``` data and a ```--destination``` directory, where it will write results. 
 
-The script can be called from anywhere. It assumes that the path to the ```worflow.yaml``` is a top level 'workplace' directory, and that paths defined in the ```workflow.yaml``` file are relative to that directory. The path defined by the```--destination``` command line argument assumed to be absolute or relative to the directory that the script is run from.
+The script can be called from anywhere. It assumes that the path to the ```worflow.yaml``` is a top level 'workplace' directory, and that paths defined in the ```workflow.yaml``` file are relative to that directory. The path defined by the```--destination``` command line argument assumed to be relative to the 'workplace' directory 
 
 ## Arguments; calling the script
 
