@@ -30,3 +30,4 @@ SQLAlchemy==1.4.17
 tld==0.12.6
 urllib3==1.26.8
 Werkzeug==2.0.1
+PyYAML==5.4.1

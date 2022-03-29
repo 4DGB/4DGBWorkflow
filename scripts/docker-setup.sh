@@ -24,11 +24,7 @@ GUNICORN_CONF="$(pwd)/conf/gunicorn.conf.py"
 # Build
 #
 
-python3 ./scripts/configure.py "$PROJECT" "$OUTPUT" "$BROWSERDIR"
-
-cd "$OUTPUT"
-# Ninja's output only confuses end-users, so we just hide it
-ninja > /dev/null
+python3 ./scripts/workflow.py "$PROJECT" "$OUTPUT" "$BROWSERDIR"
 
 #
 # Run

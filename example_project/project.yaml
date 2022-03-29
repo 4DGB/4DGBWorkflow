@@ -1,6 +1,7 @@
 project:
   name: "test_project"
   chromosome: 'chr22'
+  interval: 200000
   blackout:
     - [1, 60]
 
