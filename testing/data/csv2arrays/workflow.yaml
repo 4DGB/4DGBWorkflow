@@ -1,0 +1,25 @@
+project:
+    name:       Project Name
+    interval:   200000 
+    annotation: file.gff3
+    blackout:   [100, 101, 102]
+
+sequence:
+    name:       name of sequence
+    data:       url of sequence
+
+tracks:
+    - name: tracks_01 
+      file: input_01.csv
+      tracks: 
+        - name: trackname_01
+          columns: [first, second]
+        - name: trackname_02
+          columns: [third, fourth]
+    - name: tracks_02
+      file: input_02.csv
+      tracks: 
+        - name: trackname_03
+          columns: [first, second]
+        - name: trackname_04
+          columns: [third, fourth]
