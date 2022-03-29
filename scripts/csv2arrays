@@ -74,12 +74,16 @@ def create_arrays_from_csv_file(metadata, destination):
         t["type"] = "float"
         t["fillvalue"] = "min"
         filename = metadata["file"]
+
+        # determine if we should override the filename field
         if args.verbose:
             print("Filename: {}".format(filename))
         if "file" in t.keys():
             filename = t["file"]
             if args.verbose:
                 print("Overriding filename: {}".format(filename))
+
+        # create the variable data
         create_structure_variable_from_csv( os.path.join(get_workflow_basedir(), filename),
                                             t["name"], 
                                             t["type"], 
