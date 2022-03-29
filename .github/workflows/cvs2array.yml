@@ -23,4 +23,7 @@ jobs:
     - name: Make the release 
       run: |
         pip install pyyaml 
+        pip install argparse
+        pip install numpy
+        pip install pandas
         ./scripts/csv2arrays --workflow testing/data/csv2arrays/workflow.yaml --destination testing/scratch/csv2arrays --verbose
