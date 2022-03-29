@@ -25,4 +25,4 @@ jobs:
         pip install numpy
         pip install pandas
         pip install pyyaml
-        ./scripts/csv2arrays --workflow testing/data/csv2arrays/workflow.yaml --destination testing/scratch/csv2arrays --verbose
+        python -m unittest testing/test_csv2array.py
