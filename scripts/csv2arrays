@@ -4,6 +4,7 @@ import argparse
 import yaml
 import os
 import numpy
+import json
 import pandas as pd
 
 # globals
@@ -79,7 +80,6 @@ def create_arrays_from_csv_file(metadata, destination):
                                             t["fillvalue"],
                                             destination)
 
-
 #
 # take columns of a csv file and create a normal array from them
 # 
@@ -150,5 +150,19 @@ workflow_data = {}
 with open(args.workflow, 'r') as wstream:
     workflow_data = yaml.safe_load(wstream)
     for file in workflow_data["tracks"]:
-        create_arrays_from_csv_file(file, args.destination)
+        create_arrays_from_csv_file(file, os.path.join(WORKFLOW_BASE, args.destination))
 
+    # write out a json fragment that can be included in a project file to define arrays
+    entries = [] 
+    arrays = { "arrays" : entries }
+    curid = 0
+    for f in workflow_data["tracks"]:
+        for t in f["tracks"]:
+            entries.append({"id": curid, "url": "{}/{}/{}".format(args.destination, t["name"], "track.json")})
+            curid += 1
+    array_results = os.path.join(WORKFLOW_BASE, args.destination, "array_results.json")
+    if args.verbose:
+        print("Writing arrays results file: {}".format(array_results))
+
+    with open(array_results, "w") as ajson:
+        ajson.write(json.dumps(arrays, indent=4))
