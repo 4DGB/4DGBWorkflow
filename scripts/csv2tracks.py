@@ -15,7 +15,7 @@ helptext = ""
 
 # normal option parsing
 parser = argparse.ArgumentParser(
-            description="csv2arrays: a tool to create array data from csv files",
+            description="csv2tracks: a tool to create array data from csv files",
             epilog=helptext,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter )
 
