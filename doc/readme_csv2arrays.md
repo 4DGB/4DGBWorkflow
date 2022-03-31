@@ -40,3 +40,5 @@ some/results/directory/
     	    track.json
             track.npz
 ```
+
+The script also outputs a ```array_results.json``` file that includes a clause that defines the data that a 4DGenomeBrowser ```project.json``` file needs to define the arrays.
