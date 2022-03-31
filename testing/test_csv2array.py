@@ -49,4 +49,4 @@ class TestCSV2Arrays(unittest.TestCase):
         numpy.testing.assert_array_equal(data["arr_1"], true_arr_2)
         # a place we will find this data 
         data = numpy.load(os.path.join(TestCSV2Arrays.scratch_dir, TestCSV2Arrays.dest_dir, "trackname_06/track.npz"))
-        numpy.testing.assert_array_equal(data["arr_0"], true_arr_6)
+        numpy.testing.assert_array_equal(data["arr_1"], true_arr_6)

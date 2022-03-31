@@ -10,29 +10,23 @@ The script can be called from anywhere. It assumes that the path to the ```worfl
 csv2arrays --workflow workplace/directory/workflow.yaml --destination some/results/directory
 ```
 
-The ```workflow.yaml``` file must contain the following clause, defining how the track data is to be converted into array files. Note that the tracks must have a ```file``` field, but that can be overridden on an array-by-array basis if the track has its own ```file``` field (see the third track example). This allows data from different files to be integrated into a single track. 
+The ```workflow.yaml``` file must contain the following clause, defining how the track data is to be converted into array files. Note that the tracks must have a ```file``` field, but that can be overridden on a column-by-column basis if the information for that column is to be pulled from a different file. This is achieved by providin a column with its own ```file``` field (see the third track example). This allows data from different files to be integrated into a single track. 
 
 ```
 tracks:
-    - file: input_01.csv
-      tracks: 
-        - name: trackname_01
-          columns: [first, second, third]
-        - name: trackname_02
-          columns: [second, third, fourth]
-    - file: input_02.csv
-      tracks: 
-        - name: trackname_03
-          columns: [fifth, sixth, seventh]
-        - name: trackname_04
-          columns: [sixth, seventh, eighth]
-    - file: input_01.csv
-      tracks: 
-        - name: trackname_05
-          columns: [first, second, third]
-        - name: trackname_06
+   - name: trackname_01
+     file: input_01.csv
+     columns: 
+       - name: first
+       - name: second
+       - name: third
+   - name: trackname_02
+      file: input_01.csv
+      columns:
+        - name: first
+        - name: second
+        - name: fifth
           file: input_02.csv
-          columns: [sixth, seventh, eighth]
 ```
 
 This will result in the following files, with the ```.json``` file defining the metatdata for an array required by the browser, and the ```.npz``` file containing the compressed arrays required by the browser.
@@ -43,12 +37,6 @@ some/results/directory/
     	    track.json
             track.npz
 	trackname_02/
-    	    track.json
-            track.npz
-	trackname_03/
-    	    track.json
-            track.npz
-	trackname_04/
     	    track.json
             track.npz
 ```

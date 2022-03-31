@@ -9,22 +9,42 @@ sequence:
     data:       url of sequence
 
 tracks:
-    - file: input_01.csv
-      tracks: 
-        - name: trackname_01
-          columns: [first, second, third]
-        - name: trackname_02
-          columns: [second, third, fourth]
-    - file: input_02.csv
-      tracks: 
-        - name: trackname_03
-          columns: [fifth, sixth, seventh]
-        - name: trackname_04
-          columns: [sixth, seventh, eighth]
-    - file: input_01.csv
-      tracks: 
-        - name: trackname_05
-          columns: [first, second, third]
-        - name: trackname_06
+    - name: trackname_01
+      file: input_01.csv
+      columns: 
+        - name: first
+        - name: second
+        - name: third
+    - name: trackname_02
+      file: input_01.csv
+      columns:
+        - name: second
+        - name: third
+        - name: fourth
+    - name: trackname_03
+      file: input_02.csv
+      columns: 
+        - name: fifth
+        - name: sixth
+        - name: seventh
+    - name: trackname_04
+      file: input_02.csv
+      columns: 
+        - name: sixth
+        - name: seventh
+        - name: eighth
+    - name: trackname_05
+      file: input_01.csv
+      columns: 
+        - name: first
+        - name: second
+        - name: fifth
           file: input_02.csv
-          columns: [sixth, seventh, eighth]
+    - name: trackname_06
+      file: input_01.csv
+      columns: 
+        - name: fifth
+          file: input_02.csv
+        - name: sixth
+          file: input_02.csv
+        - name: third
