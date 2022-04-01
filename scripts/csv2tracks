@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+
+import argparse
+import yaml
+import os
+import numpy
+import json
+import pandas as pd
+
+# globals
+INIT_MINVAL     = 1000000
+INIT_MAXVAL     = -INIT_MINVAL
+
+helptext = ""
+
+# normal option parsing
+parser = argparse.ArgumentParser(
+            description="csv2tracks: a tool to create array data from csv files",
+            epilog=helptext,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter )
+
+parser.add_argument(    "--workflow",
+                        required=True,
+                        default="workflow.yaml",
+                        help="the workflow input file")
+
+parser.add_argument(    "--destination",
+                        required=True,
+                        default="results",
+                        help="directory for results")
+
+parser.add_argument(    "--verbose",
+                        required=False,
+                        action="store_true",
+                        help="report verbosely")
+
+args = parser.parse_args()
+
+WORKFLOW_BASE = os.path.dirname(args.workflow) 
+
+def get_structure_array_metadata(name, type, min, max, npz_file):
+    array_metadata = '''{{
+"name"      : "{0}",
+"type"      : "structure",
+"version"   : "0.1",
+"tags"      : [],
+"data"      : {{
+    "type"  : "{1}",
+    "dim"   : 1,
+    "min"   : {2},
+    "max"   : {3},
+    "values" : [
+        {{
+            "id"  : "arr_0",
+            "url" : "{4}"
+        }},
+        {{
+            "id"  : "arr_1",
+            "url" : "{5}"
+        }}
+    ]
+}}
+}}
+'''.format(name, type, min, max, npz_file, npz_file)
+
+    return array_metadata
+
+def get_workflow_basedir():
+    return WORKFLOW_BASE
+
+def create_track(track, destination):
+        # create the variable data
+        # add some missing metadata
+        track["type"] = "float"
+        track["fillvalue"] = "min"
+        # create_structure_variable_from_csv( os.path.join(get_workflow_basedir(), track["file"]),
+        write_structure_variable(   track["file"],
+                                    track["name"], 
+                                    track["type"], 
+                                    track["columns"],
+                                    track["fillvalue"],
+                                    destination)
+
+def write_structure_variable( fname, varname, vartype, columns, fillvalue, destination ) :
+    # get the current file names
+    # afile = get_curfilename_base()
+    afile_json = os.path.join(destination, varname, "track.json")
+    afile_npz  = os.path.join(destination, varname, "track.npz")
+
+    res_df = pd.DataFrame()
+    for c in columns:
+        fullpath = os.path.join(get_workflow_basedir(), fname) 
+        if "file" in c:
+            # override file locally, if it's present
+            if args.verbose:
+                print("Overriding file")
+            fullpath = os.path.join(get_workflow_basedir(), c["file"])
+        df = pd.read_csv( fullpath, usecols=[c["name"]], engine='python' )
+        res_df[c["name"]] = df[c["name"]]
+
+    # find min and max
+    # TODO: do this natively in pandas
+    minval = INIT_MINVAL
+    maxval = INIT_MAXVAL
+    for c in columns :
+        curmin = res_df[c["name"]].min()
+        if (curmin < minval) :
+            minval = curmin 
+        curmax = res_df[c["name"]].max()
+        if (curmax > maxval) :
+            maxval = curmax 
+    # fill na with the minimum value
+    res_df.fillna(minval, inplace=True)
+
+    # write the files
+    if args.verbose:
+        print("saving file to: {}".format(afile_json))
+        print("saving file to: {}".format(afile_npz))
+    array_metadata = get_structure_array_metadata( varname, vartype, minval, maxval, afile_npz)
+    os.makedirs(os.path.dirname(afile_json), exist_ok=True)
+    with open(afile_json, "w") as f:
+        f.write(array_metadata)
+
+    os.makedirs(os.path.dirname(afile_npz), exist_ok=True)
+    # numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
+    if args.verbose:
+        print("testing ...")
+        print(res_df[columns[0]])
+        print(res_df[columns[1]])
+    np_arr_list = []
+    for i in res_df.columns:
+        new_np_arr = numpy.array(res_df.loc[:,i])
+        np_arr_list.append(new_np_arr)
+    # numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
+    numpy.savez_compressed(afile_npz, *np_arr_list)
+    # numpy.savez_compressed(afile_npz, *df) 
+
+
+# create arrays
+workflow_data = {}
+with open(args.workflow, 'r') as wstream:
+    workflow_data = yaml.safe_load(wstream)
+    for track in workflow_data["tracks"]:
+        if args.verbose:
+            print("Creating track: {}".format(track["name"]))
+        create_track(track, os.path.join(WORKFLOW_BASE, args.destination))
+
+    # write out a json fragment that can be included in a project file to define arrays
+    entries = [] 
+    arrays = { "arrays" : entries }
+    curid = 0
+    for t in workflow_data["tracks"]:
+        entries.append({"id": curid, "url": "{}/{}/{}".format(args.destination, t["name"], "track.json")})
+        curid += 1
+    array_results = os.path.join(WORKFLOW_BASE, args.destination, "array_results.json")
+    if args.verbose:
+        print("Writing arrays results file: {}".format(array_results))
+
+    with open(array_results, "w") as ajson:
+        ajson.write(json.dumps(arrays, indent=4))
