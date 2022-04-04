@@ -18,10 +18,19 @@ sequence:
     data:       url of sequence         (required) 
 
 tracks:
-    - name:     tracks one              (optional)
-      data:     somefile.yaml           (required)
-    - name:     tracks two              (optional)
-      data:     somefile.yaml           (required)
+   - name: trackname_01
+     file: input_01.csv
+     columns: 
+       - name: first
+       - name: second
+       - name: third
+   - name: trackname_02
+      file: input_01.csv
+      columns:
+        - name: first
+        - name: second
+        - name: fifth
+          file: input_02.csv
     - ...
 
 datasets:
@@ -57,39 +66,9 @@ x,y,z
 
 ### Track data
 
-A track is specified by two files: a `track.yaml` file (specifying metadata about the track) and a file containing the data (either a compressed python `track.npz` or text-based `track.csv` file). 
+A track is specified by a name, an input csv file and a list of column names in that file. The columns listed map directly onto the datasets in the `datasets` section. (So that first column belongs to the first dataset, the second to the second dataset and so on). Optionally, you can override the filename specified in each column so that a track can have data from seperate files.
 
-Specification of the `track.yaml` file:
-```
-name    : name of the track
-type    : structure
-version : version of the track metadata file
-data    :
-    type    : string value, one of [int, float]
-    dim     : integer (number of sets of values)
-    length  : number of elements in each set of values 
-    min     : min value over all track 
-    max     : max value over all track 
-    values :
-        - id : name needed to retrieve data 
-          url: relative path to the data file 
-        - id : name needed to retrieve data 
-          url: relative path to the data file 
-        ...
-```
-
-The `id` used to retrieve the data is either the name used by python's compressed array reader to access the data in the `track.npz` file, or the column name of the data in the `track.csv` file.
-
-An `track.csv` file looks like this (where `time_0` and `time_1` are the `value:id` names:
-
-```
-time_0,time_1
-0.0,0.0
-0.1,0.0001
-0.2,0.0002
-0.3,0.0003
-...
-```
+Track data is parsed using the [csv2tracks](../scripts/csv2tracks) script. For more details, see its [documentation](readme_csv2tracks.md)
 
 ### Annotation `csv` file
 
