@@ -1,6 +1,7 @@
 venv/
 test_project*/
 test_out/
+testing/scratch/
 __pycache__/
 .vscode/
 .ninja_log

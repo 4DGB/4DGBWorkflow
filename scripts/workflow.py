@@ -17,6 +17,7 @@
 #    db_pop script that's in there)
 #
 
+from asyncio.subprocess import STDOUT
 from cgitb import text
 import sys
 import os
@@ -86,6 +87,15 @@ if len(sys.argv) < 4:
     sys.argv[1:4]
 )
 
+# Find project input file
+search = [ INDIR.joinpath(f) for f in ['workflow.yaml', 'project.yaml'] ]
+# Find and load file
+try:
+    INPUT_FILE = next( f for f in search if f.is_file() )
+except StopIteration:
+    print(f"Could not find project file. (Looked for '{search[0]}' and '{search[1]}')")
+    exit(1)
+
 ####################################
 #
 #    HELPER FUNCTIONS
@@ -114,15 +124,7 @@ def load_project_spec() -> dict:
     Load the project.yaml or workflow.yaml (either filename is acceptable)
     for the input project
     '''
-    # Find and load file
-    search = [ INDIR.joinpath(f) for f in ['workflow.yaml', 'project.yaml'] ]
-    try:
-        project_file = next( f for f in search if f.is_file() )
-    except StopIteration:
-        print(f"Could not find project file. (Looked for '{search[0]}' and '{search[1]}')")
-        exit(1)
-
-    with open(project_file, 'r') as f:
+    with open(INPUT_FILE, 'r') as f:
         project_input = yaml.load(f, Loader=Loader)
     
     # Resolve default settings
@@ -319,7 +321,7 @@ def track_data_entries(tracks: list) -> list:
     '''
     return [{
         'id': i,
-        'url': track['data']
+        'url': f"tracks/{track['name']}/track.json"
     }
     for i,track in enumerate(tracks)]
 
@@ -333,7 +335,7 @@ def make_project_json(project: dict, results: list) -> dict:
     out_project['project']['name'] = project['project']['name']
     out_project['project']['interval'] = project['project']['interval']
 
-    #out_project['data']['array'] = track_data_entries(project['tracks'])
+    out_project['data']['array'] = track_data_entries(project['tracks'])
 
     for result in results:
         out_project['data']['md-contact-map'].append( contact_map_entry(project, result) )
@@ -343,10 +345,36 @@ def make_project_json(project: dict, results: list) -> dict:
     return out_project
 
 ########################
+# TRACK DATA
+########################
+
+def make_tracks():
+    '''
+    Call csv2tracks to generate track data for the project
+    '''
+    csv2tracks = Path(__file__).parents[0].joinpath('csv2tracks')
+    run = subprocess.run([
+        csv2tracks,
+        '--workflow', INPUT_FILE,
+        '--destination', OUTDIR.joinpath('tracks'),
+        '--relative', OUTDIR,
+        '--verbose'
+    ],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+    )
+
+    try:
+        run.check_returncode()
+    except subprocess.CalledProcessError as e:
+        print(run.stdout)
+        print("Error creating tracks!")
+        raise e
+
+########################
 # BROWSER
 ########################
 
-def run_db_pop(project_dir: Path):
+def run_db_pop():
     '''
     Run the browser's db_pop script to generate the project database
     '''
@@ -394,9 +422,9 @@ def main():
     with open(OUTDIR.joinpath("project.json"), 'w') as f:
         json.dump(out_project, f)
 
-    # Run db_pop
-    run_db_pop(OUTDIR)
+    make_tracks()
+
+    run_db_pop()
 
 if __name__ == '__main__':
     main()
-

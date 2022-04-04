@@ -7,6 +7,8 @@ import numpy
 import json
 import pandas as pd
 
+from pathlib import Path
+
 # globals
 INIT_MINVAL     = 1000000
 INIT_MAXVAL     = -INIT_MINVAL
@@ -27,7 +29,12 @@ parser.add_argument(    "--workflow",
 parser.add_argument(    "--destination",
                         required=True,
                         default="results",
-                        help="directory for results")
+                        help="directory for results (relative to directory containing workflow input file)")
+
+parser.add_argument(    "--relative",
+                        required=False,
+                        help="Make paths in the output metadata json files relative to this directory"
+)
 
 parser.add_argument(    "--verbose",
                         required=False,
@@ -87,8 +94,13 @@ def write_structure_variable( fname, varname, vartype, columns, fillvalue, desti
     afile_json = os.path.join(destination, varname, "track.json")
     afile_npz  = os.path.join(destination, varname, "track.npz")
 
+    if args.relative:
+        npz_path = Path(afile_npz).relative_to(args.relative)
+    else:
+        npz_path = afile_npz
+
     res_df = pd.DataFrame()
-    for c in columns:
+    for i,c in enumerate(columns):
         fullpath = os.path.join(get_workflow_basedir(), fname) 
         if "file" in c:
             # override file locally, if it's present
@@ -96,17 +108,17 @@ def write_structure_variable( fname, varname, vartype, columns, fillvalue, desti
                 print("Overriding file")
             fullpath = os.path.join(get_workflow_basedir(), c["file"])
         df = pd.read_csv( fullpath, usecols=[c["name"]], engine='python' )
-        res_df[c["name"]] = df[c["name"]]
+        res_df[i] = df[c["name"]]
 
     # find min and max
     # TODO: do this natively in pandas
     minval = INIT_MINVAL
     maxval = INIT_MAXVAL
-    for c in columns :
-        curmin = res_df[c["name"]].min()
+    for i,c in enumerate(columns) :
+        curmin = res_df[i].min()
         if (curmin < minval) :
             minval = curmin 
-        curmax = res_df[c["name"]].max()
+        curmax = res_df[i].max()
         if (curmax > maxval) :
             maxval = curmax 
     # fill na with the minimum value
@@ -116,7 +128,7 @@ def write_structure_variable( fname, varname, vartype, columns, fillvalue, desti
     if args.verbose:
         print("saving file to: {}".format(afile_json))
         print("saving file to: {}".format(afile_npz))
-    array_metadata = get_structure_array_metadata( varname, vartype, minval, maxval, afile_npz)
+    array_metadata = get_structure_array_metadata( varname, vartype, minval, maxval, npz_path)
     os.makedirs(os.path.dirname(afile_json), exist_ok=True)
     with open(afile_json, "w") as f:
         f.write(array_metadata)
@@ -125,8 +137,8 @@ def write_structure_variable( fname, varname, vartype, columns, fillvalue, desti
     # numpy.savez_compressed(afile_npz, arr_0=df[columns[0]], arr_1=df[columns[1]]) 
     if args.verbose:
         print("testing ...")
-        print(res_df[columns[0]])
-        print(res_df[columns[1]])
+        print(res_df[0])
+        print(res_df[1])
     np_arr_list = []
     for i in res_df.columns:
         new_np_arr = numpy.array(res_df.loc[:,i])

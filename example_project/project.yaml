@@ -13,12 +13,32 @@ datasets:
 
 tracks:
   - name: "ATAC"
-    data: "array/atac.json"
+    file: "chr22.tracks.csv"
+    columns:
+      - name: "ATAC"
+      - name: "ATAC"
+        file: "chr22.tracks.12.csv"
   - name: "H3K27ac"
-    data: "array/h3k27ac.json"
+    file: "chr22.tracks.csv"
+    columns:
+      - name: "H3K27ac"
+      - name: "H3K27ac"
+        file: "chr22.tracks.12.csv"
   - name: "H3K9me3"
-    data: "array/h3k9me3.json"
+    file: "chr22.tracks.csv"
+    columns:
+      - name: "H3K9me3"
+      - name: "H3K9me3"
+        file: "chr22.tracks.12.csv"
   - name: "PC1"
-    data: "array/pc1.json"
+    file: "chr22.tracks.csv"
+    columns:
+      - name: "PC1"
+      - name: "PC1"
+        file: "chr22.tracks.12.csv"
   - name: "PC2"
-    data: "array/pc2.json"
+    file: "chr22.tracks.csv"
+    columns:
+      - name: "PC2"
+      - name: "PC2"
+        file: "chr22.tracks.12.csv"
