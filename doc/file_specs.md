@@ -12,6 +12,7 @@ project:
     interval:   integer                 (optional, default=200000)
     annotation: file.gff3               (required)
     blackout:   [a list of bead IDs]    (optional)
+    spector_correlation:    float       (optional global value)
 
 sequence:
     name:       name of sequence        (required)
@@ -36,9 +37,16 @@ tracks:
 datasets:
     - name:     Name of first dataset   (optional)
       hic:      somefile.ext            (required)
+      spector_correlation:  float       (optional override on global value)
     - name:     Name of second dataset  (optional)
       hic:      somefile.ext            (required)
+      spector_correlation:  float       (optional override on global value)
 ```
+
+## Explanation of values
+
+- **`spector_correlation`** A metric that compares the correlation between the contact map computed for the input `hic` data and a contact map computed after the structure for the `hic` data has been computed by the MD simulation. The user can set this value globally, and override it per dataset. If the correlation threshold is not met, the MD simulation will be re-computed until that value is met. See [spector correlation](spector.md) for more information.
+    
 
 ## Computed Values
 

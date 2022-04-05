@@ -1,4 +1,4 @@
-# Instructions for cvs2arrays script
+# Instructions for cvs2tracks script
 
 The script takes as input a ```workflow.yaml``` file that defines the ```cas``` data and a ```--destination``` directory, where it will write results. 
 
@@ -7,7 +7,7 @@ The script can be called from anywhere. It assumes that the path to the ```worfl
 ## Arguments; calling the script
 
 ```
-csv2arrays --workflow workplace/directory/workflow.yaml --destination some/results/directory
+csv2tracks --workflow workplace/directory/workflow.yaml --destination some/results/directory
 ```
 
 The ```workflow.yaml``` file must contain the following clause, defining how the track data is to be converted into array files. Note that the tracks must have a ```file``` field, but that can be overridden on a column-by-column basis if the information for that column is to be pulled from a different file. This is achieved by providin a column with its own ```file``` field (see the third track example). This allows data from different files to be integrated into a single track. 
