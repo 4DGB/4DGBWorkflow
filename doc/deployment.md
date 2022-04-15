@@ -8,7 +8,7 @@ This guide explains how to set up an instance of the 4DGB browser suitable to be
 
 1. First, you must build the docker image for production use. This works just like building the image for local use, except with the build-arg `MODE=production`
 ```sh
-docker build -t 4dgbworkflow-prod --build-arg MODE=production .
+docker build -t 4dgbworkbench-prod --build-arg MODE=production .
 ```
 
 2. Next, obtain an SSL/TLS certificate and private key for your server. How exactly you do this is outside the scope of the guide, but if you're at a loss, why not try [Let'sEncrypt](https://letsencrypt.org/)?
@@ -41,7 +41,7 @@ Running the Docker container has a "few" requirements:
 
 Below is an example to run the container using the example material available in this repository:
 ```sh
-docker run --rm -it -e NEWUID=$(id -u) -e NEWGID=$(id -g) -p "8000:443" -v $(pwd)/test_project:/project -v $(pwd)/production_example/passwd:/etc/nginx/passwd:ro -v $(pwd)/production_example/ssl:/etc/nginx/ssl:ro 4dgbworkflow-prod 8000 "test"
+docker run --rm -it -e NEWUID=$(id -u) -e NEWGID=$(id -g) -p "8000:443" -v $(pwd)/example_project:/project -v $(pwd)/production_example/passwd:/etc/nginx/passwd:ro -v $(pwd)/production_example/ssl:/etc/nginx/ssl:ro 4dgb/workbench-prod 8000 "test"
 ```
 
 **NOTE:** The example SSL certificate in this repository is self-signed, so your browser might still reject it. To log on, use the username `user`, and the password `password`.
@@ -53,7 +53,7 @@ version: "3"
 
 services:
   browser:
-    image: "4dgbworkflow-prod:latest"
+    image: "4dgb/workbench-prod:latest"
     ports:
       - "8000:443"
     tty: true
@@ -61,7 +61,7 @@ services:
       NEWUID: 1000
       NEWGID: 1000
     volumes:
-      - "./test_project:/project:ro"
+      - "./example_project:/project"
       - "./production_example/passwd:/etc/nginx/passwd:ro"
       - "./production_example/ssl:/etc/nginx/ssl:ro"
     command: 8000 test

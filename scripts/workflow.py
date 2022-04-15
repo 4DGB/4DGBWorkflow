@@ -33,10 +33,8 @@ from pathlib import Path
 import yaml
 from yaml import Loader
 
-from hic2structure_lib.hic import HIC, HICError
-from hic2structure_lib.lammps import run_lammps, LAMMPSError
-from hic2structure_lib.out import write_structure, write_contacts
-from hic2structure_lib.contact import find_contacts
+import hic2structure
+from hic2structure import Settings
 
 ####################################
 #
@@ -64,17 +62,6 @@ DEFAULT_PROJECT = {
     'datasets': [],
     'tracks': []
 }
-
-# Set of keys under 'project' in configuration that constitute the settings
-# for processing Hi-C files. A change in any of these means that the file will
-# need to be processed again.
-SETTINGS_KEYS = [
-    'interval',
-    'chromosome',
-    'threshold',
-    'timesteps',
-    'bond_coeff'
-]
 
 # Parse arguments
 if len(sys.argv) < 4:
@@ -133,11 +120,21 @@ def load_project_spec() -> dict:
         project_input
     )
 
+def settings_from_project(project_spec: dict) -> Settings:
+    project: dict = project_spec['project']
+    return {
+        'chromosome': project['chromosome'],
+        'threshold':  project['threshold'],
+        'resolution': project['interval'],
+        'bond_coeff': project['bond_coeff'],
+        'timesteps':  project['timesteps']
+    }
+
 ########################
 # Hi-C Processing
 ########################
 
-def process_hic(settings: dict, input: Path, outdir: Path):
+def process_hic(settings: Settings, input: Path, outdir: Path):
     '''
     Process a Hi-C file. The run is
     performed in a temporary directory, with the results being copied to
@@ -147,11 +144,13 @@ def process_hic(settings: dict, input: Path, outdir: Path):
 
     Returns a dict of Paths to the various output files
     '''
-    log_name = 'sim.log'
-    log_file       = outdir.joinpath(log_name)
-    settings_file  = outdir.joinpath('settings.json')
-    structure_file = outdir.joinpath('structure.csv')
-    contact_file   = outdir.joinpath('contactmap.tsv')
+
+    settings_file = (outdir/'settings.json').resolve()
+    results = {
+        'structure':  (outdir/'structure.csv').resolve(),
+        'contactmap': (outdir/'contactmap.tsv').resolve(),
+        'log':        (outdir/'sim.log').resolve(),
+    }
 
     # Print info about current processing run
     def info(message):
@@ -184,40 +183,12 @@ def process_hic(settings: dict, input: Path, outdir: Path):
             with tempfile.TemporaryDirectory() as tmpdir:
                 tmpdir_path = Path(tmpdir)
 
-                # Read records from Hi-C file
                 try:
-                    data = HIC(input)
-                    records = data.get_contact_records(
-                        settings['chromosome'],
-                        settings['interval'],
-                        settings['threshold']
-                    )
-                except HICError as e:
-                    error(f"Error reading contact records: {e}")
-                    raise e
-
-                # Run LAMMPS
-                try:
-                    info("Running LAMMPS...")
-                    lammps_out = run_lammps(
-                        tmpdir_path,
-                        records,
-                        timesteps=settings['timesteps'],
-                        bond_coeff=settings['bond_coeff'],
-                    )
-                except LAMMPSError as e:
-                    log_path = log_file.relative_to(OUTDIR)
+                    results = hic2structure.process_hic(input, outdir, settings)
+                except Exception as e:
+                    log_path = results['log'].relative_to(OUTDIR)
                     error(f"Error running LAMMPS! A log may be available in the output directory in {log_path}")
                     raise e
-                finally:
-                    # Copy LAMMPS log file
-                    shutil.copy2( tmpdir_path.joinpath(log_name), log_file )
-
-                # Write output
-                info("LAMMPS Finished! Saving output...")
-                contacts = find_contacts(lammps_out)
-                write_structure(structure_file, lammps_out)
-                write_contacts(contact_file, contacts)
 
             # (Temporary directory destroyed)
 
@@ -235,13 +206,9 @@ def process_hic(settings: dict, input: Path, outdir: Path):
             settings_file.unlink(missing_ok=True)
             raise e
 
-    return {
-        'structure':  structure_file,
-        'contactmap': contact_file,
-        'log':        log_file
-    }
+    return results
 
-def process_datasets(settings: dict, inputs: list, outdir: Path) -> list:
+def process_datasets(settings: Settings, inputs: list[dict], outdir: Path) -> list[dict]:
     '''
     Process the given datasets from the project. Datasets are processed in
     parallel.
@@ -262,7 +229,7 @@ def process_datasets(settings: dict, inputs: list, outdir: Path) -> list:
 # PROJECT.JSON GENERATION
 ########################
 
-def contact_map_entry(project: dict, result: tuple) -> dict:
+def contact_map_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
     '''
     Create an entry for the project.json's 'md-contact-map' array for the given
     the result (represented as a tuple of id, input dataset and output paths)
@@ -274,7 +241,7 @@ def contact_map_entry(project: dict, result: tuple) -> dict:
         'interval': project['project']['interval']
     }
 
-def structure_entry(project: dict, result: tuple) -> dict:
+def structure_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
     '''
     Create an entry for the project.json's 'structure' array for the given
     the result (represented as a tuple of id, input dataset and output paths)
@@ -299,7 +266,7 @@ def structure_entry(project: dict, result: tuple) -> dict:
         'interval': project['project']['interval']
     }
 
-def dataset_entry(project: dict, result: tuple) -> dict:
+def dataset_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
     '''
     Create an entry for the project.json's 'dataset' array for the given
     the result (represented as a tuple of id, input dataset and output paths)
@@ -314,7 +281,7 @@ def dataset_entry(project: dict, result: tuple) -> dict:
         'epigenetics': result[0]
     }
 
-def track_data_entries(tracks: list) -> list:
+def track_data_entries(tracks: list[dict]) -> list:
     '''
     Create an entry for the project.json's 'array' field for the given
     track data from the project input.
@@ -325,7 +292,7 @@ def track_data_entries(tracks: list) -> list:
     }
     for i,track in enumerate(tracks)]
 
-def make_project_json(project: dict, results: list) -> dict:
+def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dict:
     '''
     Create a dict for the project.json for the output project, given the input
     project and a list of results from the Hi-C processing
@@ -406,7 +373,7 @@ def main():
     OUTDIR.mkdir(exist_ok=True)
 
     # Process Hi-C data
-    process_settings = { k: project['project'][k] for k in SETTINGS_KEYS }
+    process_settings = settings_from_project(project)
     process_outputs = process_datasets(process_settings, project['datasets'], OUTDIR )
 
     # A list of tuples matching ids and input datasets with the paths to

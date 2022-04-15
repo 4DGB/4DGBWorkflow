@@ -17,16 +17,7 @@
 ##############################
 # Stage 1: Build gtk.min.js
 ##############################
-FROM ubuntu:20.04 as js
-
-# Install dependencies
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates build-essential curl libcurl4-openssl-dev
-
-# Setup NodeJS PPA
-RUN curl -fsSL 'https://deb.nodesource.com/setup_16.x' > setup_16.x
-RUN bash setup_16.x
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+FROM node:16-alpine as js
 
 # Build Browser JS
 COPY submodules/4DGB /opt/git/4dgb
@@ -36,17 +27,31 @@ RUN cd /opt/git/4dgb \
     && cp  client-js/gtk-dist/gtk.min.js /root/gtk.min.js
 
 ##############################
-# Stage 2: Everything else
+# Stage 2: Python dependencies
 ##############################
-FROM ubuntu:20.04 as release
+
+FROM python:3.10.4-bullseye as python
+
+COPY ./requirements.txt ./requirements.txt
+RUN pip3 install wheel \
+    && pip3 wheel -r requirements.txt --wheel-dir /root/wheels
+
+# Install hic2structure.py script
+COPY submodules/3DStructure /opt/git/3DStructure
+RUN cd /opt/git/3DStructure/src \
+    && pip3 wheel . --wheel-dir /root/wheels
+
+##############################
+# Stage 3: Putting it all together
+##############################
+FROM python:3.10.4-bullseye as release
 
 # Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates build-essential libcurl4-openssl-dev \
-    python3 python3-pip rsync gosu ninja-build cpanminus \
-    nginx lammps
-RUN cpanm URI::Escape
-RUN ln -s /usr/bin/python3 /usr/bin/python
+        rsync gosu cpanminus nginx lammps \
+    && apt-get clean \
+    && cpanm URI::Escape \
+    && ln -s /usr/bin/python3 /usr/bin/python
 
 #Setup Directories/Permissions
 # We need to set permissions on a few things so nginx can
@@ -58,18 +63,14 @@ RUN mkdir -p /var/lib/nginx /var/log/nginx \
     # in order to write to stdout
     && usermod -aG tty www-data
 
-# Install Python dependencies
+# Install pre-compiled python dependencies
 COPY ./requirements.txt ./requirements.txt
-RUN pip3 install -r ./requirements.txt
-
-COPY submodules/4DGB /opt/git/4dgb
-
-# Install hic2structure.py script
-COPY submodules/3DStructure /opt/git/3DStructure
-RUN cd /opt/git/3DStructure/src \
-    && python3 setup.py install
+COPY --from=python /root/wheels ./wheels
+RUN pip3 install --no-index --find-links=./wheels -r ./requirements.txt \
+    && pip3 install --no-index --find-links=./wheels hic2structure
 
 # Copy files
+COPY submodules/4DGB /opt/git/4dgb
 COPY --from=js /root/gtk.min.js /opt/git/4dgb/server/static/gtk/js/
 COPY ./scripts ./scripts
 COPY ./conf ./conf
@@ -84,9 +85,8 @@ RUN if [ "${MODE}" != "production" ] && [ "${MODE}" != "local" ] ; then \
 # If in production mode, symlink nginx's access log to stdout
 RUN if [ "${MODE}" = "production" ] ; then \
     ln -sf /dev/stdout /var/log/nginx/access.log \
-    ; fi
-# Copy configuration
-RUN cp ./conf/nginx-${MODE}.conf /etc/nginx/nginx.conf
+    ; fi \
+    && cp ./conf/nginx-${MODE}.conf /etc/nginx/nginx.conf
 
 # Copy version
 COPY ./version.txt ./version.txt
