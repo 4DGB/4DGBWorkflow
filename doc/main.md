@@ -27,7 +27,7 @@ The workflow accepts the following input data. Specifications for each type of d
 
 ### ``project.json`` specification
 
-(TBD David)
+The ``project.json`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](doc/project.md)
 
 **Parameters**
 - (parameter) 
