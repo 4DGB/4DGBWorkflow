@@ -2,7 +2,7 @@
 
 The 4DGB Workflow provides an end-to-end workflow  for exploring 4D genomic data. The workflow and browser support analysis of sets of related data, for example, a time series of a chromosome, allowing scientists to visualize their genomic data in three dimensions.
 
-Scientists provide input ``.hic`` data and track data, and a ``project.json`` file that defines the 
+Scientists provide input ``.hic`` data and track data, and a ``project.yaml`` file that defines the 
 
 ## Input data
 
@@ -10,7 +10,7 @@ The workflow accepts the following input data. Specifications for each type of d
 
 - ``.hic`` data files. These are used to compute and estimated 3D structure for the genomics data. 
 - ``.csv`` files with track data.
-- ``project.json`` file defining how the ``.hic`` and ``csv`` files are related.
+- ``project.yaml`` file defining how the ``.hic`` and ``csv`` files are related.
 
 ### ``.hic`` data specification
 
@@ -26,14 +26,9 @@ Scientists can include ``.hic`` data as input used to compute the structure for 
 - All rows other than the first line are treated as float values 
 - All values in a row must be a valid float value, the empty string, or ``NaN``, a string that results in a ``NaN`` value. 
 
-### ``project.json`` specification
+### ``project.yaml`` specification
 
-The ``project.json`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](project.md).
-
-**Parameters**
-- (parameter) 
-- (parameter) 
-- (parameter) 
+The ``project.yaml`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](project.md).
 
 # References
 

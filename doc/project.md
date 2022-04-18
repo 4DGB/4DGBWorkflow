@@ -1,8 +1,4 @@
-# Project Specification
-
-⚠ This specification is a work in progress. Not all features specified here have been implemented yet and other features are subject to change.
-
-## Input Parameters
+# ``project.yaml`` Specification
 
 The input to the workflow is a directory with a file named `workflow.yaml` or `project.yaml` with the following values:
 
