@@ -17,7 +17,7 @@ The workflow accepts the following input data. Specifications for each type of d
 Scientists can include ``.hic`` data as input used to compute the structure for the genome, and to provide a framework for 3D visualization of the track data defined in ``.csv`` files. For a complete description of how to prepare this input, see the [``.hic`` data preparation specification](hic_input.md).
 
 
-### Data Specification ``.csv``
+### Data Specification: ``.csv``
 
 ``.csv`` files follow the format specification **rfc4180** [[1]](#1). In addition, the following constraints are applied:
 
