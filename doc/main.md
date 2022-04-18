@@ -8,7 +8,7 @@ Scientists provide input ``.hic`` data and track data, and a ``project.json`` fi
 
 The workflow accepts the following input data. Specifications for each type of data can be found in the following sections:
 
-- ``.hic`` data 
+- ``.hic`` data files. These are used to compute and estimated 3D structure for the genomics data. 
 - ``.csv`` files with track data.
 - ``project.json`` file defining how the ``.hic`` and ``csv`` files are related.
 
@@ -18,9 +18,12 @@ The workflow accepts the following input data. Specifications for each type of d
 
 ### ``.csv`` data specification
 
-``.csv`` files follow the specification **rfc4180** [[1]](#1)
+``.csv`` files follow the format specification **rfc4180** [[1]](#1). In addition, the following constraints are applied:
 
-(TBD David)
+- There shall be **NUM_BEADS + 1** rows in the file, the first of which is the names of the columns
+- The first line of the file shall be names for the column, with each value treated as a string.
+- All rows other than the first line are treated as float values 
+- All values in a row must be a valid float value, the empty string, or ``NaN``, a string that results in a ``NaN`` value. 
 
 ### ``project.json`` specification
 

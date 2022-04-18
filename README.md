@@ -24,7 +24,7 @@ datasets:
     hic:  "path/to/data_02.hic"
 ```
 
-*See the [File Specification Document](doc/file_specs.md) for full details on what can be included in the input data*
+*See the [File Specification Document](doc/project.md) for full details on what can be included in the input data*
 
 2. Checkout submodules
 
