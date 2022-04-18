@@ -14,7 +14,7 @@ The workflow accepts the following input data. Specifications for each type of d
 
 ### ``.hic`` data specification
 
-Scientists can include ``.hic`` data as input used to compute the structure for the genome, and to provide a framework for 3D visualization of the track data defined in ``.csv`` files. For a complete description of how to prepare this input, see the [``.hic`` data preparation specification](doc/hic_input.md).
+Scientists can include ``.hic`` data as input used to compute the structure for the genome, and to provide a framework for 3D visualization of the track data defined in ``.csv`` files. For a complete description of how to prepare this input, see the [``.hic`` data preparation specification](hic_input.md).
 
 
 ### ``.csv`` data specification
@@ -28,7 +28,7 @@ Scientists can include ``.hic`` data as input used to compute the structure for 
 
 ### ``project.json`` specification
 
-The ``project.json`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](doc/project.md).
+The ``project.json`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](project.md).
 
 **Parameters**
 - (parameter) 
