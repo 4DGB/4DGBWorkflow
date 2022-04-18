@@ -12,12 +12,12 @@ The workflow accepts the following input data. Specifications for each type of d
 - ``.csv`` files with track data.
 - ``project.yaml`` file defining how the ``.hic`` and ``csv`` files are related.
 
-### ``.hic`` data specification
+### Data Specification: ``.hic``
 
 Scientists can include ``.hic`` data as input used to compute the structure for the genome, and to provide a framework for 3D visualization of the track data defined in ``.csv`` files. For a complete description of how to prepare this input, see the [``.hic`` data preparation specification](hic_input.md).
 
 
-### ``.csv`` data specification
+### Data Specification ``.csv``
 
 ``.csv`` files follow the format specification **rfc4180** [[1]](#1). In addition, the following constraints are applied:
 
@@ -26,7 +26,7 @@ Scientists can include ``.hic`` data as input used to compute the structure for 
 - All rows other than the first line are treated as float values 
 - All values in a row must be a valid float value, the empty string, or ``NaN``, a string that results in a ``NaN`` value. 
 
-### ``project.yaml`` specification
+### Data Specification: ``project.yaml``
 
 The ``project.yaml`` file defines high level data for the workflow, and defines how ``.hic`` and ``csv`` files are related. For a complete description, see the [project file specification](project.md).
 
