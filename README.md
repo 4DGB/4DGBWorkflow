@@ -15,7 +15,7 @@ project:
   name: "My Project"
   interval: 200000 # optional (defaults to 200000)
   chromosome: X    # optional (defaults to 'X')
-  threshold:  2.0  # optional (defaults to 2.0)
+  count_threshold:  2.0  # optional (defaults to 2.0)
 
 datasets:
   - name: "Data 01"

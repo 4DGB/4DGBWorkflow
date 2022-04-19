@@ -54,7 +54,8 @@ DEFAULT_PROJECT = {
         'name': "Untitled",
         'interval': 200000,
         'chromosome': 'X',
-        'threshold': 2.0,
+        'count_threshold': 2.0,
+        'distance_threshold': 3.3,
         'blackout': [],
         'timesteps': 1000000,
         'bond_coeff': 55
@@ -124,7 +125,8 @@ def settings_from_project(project_spec: dict) -> Settings:
     project: dict = project_spec['project']
     return {
         'chromosome': project['chromosome'],
-        'threshold':  project['threshold'],
+        'count_threshold':  project['count_threshold'],
+        'distance_threshold':  project['distance_threshold'],
         'resolution': project['interval'],
         'bond_coeff': project['bond_coeff'],
         'timesteps':  project['timesteps']

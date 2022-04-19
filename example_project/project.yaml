@@ -2,7 +2,7 @@ project:
   name: "test_project"
   chromosome: 'chr22'
   interval: 200000
-  threshold: 2.5
+  count_threshold: 2.0
   blackout:
     - [1, 60]
 
