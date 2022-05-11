@@ -33,8 +33,11 @@ from pathlib import Path
 import yaml
 from yaml import Loader
 
-import hic2structure
-from hic2structure import Settings
+from hic2structure.types import Settings
+from hic2structure.hic import HIC
+from hic2structure.lammps import run_lammps
+from hic2structure.contacts import find_contacts, contact_records_to_set
+from hic2structure.out import write_contact_records, write_structure, write_contact_set
 
 ####################################
 #
@@ -147,8 +150,8 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
     Returns a dict of Paths to the various output files
     '''
 
-    settings_file = (outdir/'settings.json').resolve()
     results = {
+        'settings':   (outdir/'settings.json').resolve(),
         'structure':  (outdir/'structure.csv').resolve(),
         'contactmap': (outdir/'contactmap.tsv').resolve(),
         'log':        (outdir/'sim.log').resolve(),
@@ -162,9 +165,26 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
     def error(message):
         print(f"  \033[1m[\033[31mX\033[0m\033[1m {input.name}]:\033[0m {message}")
 
+    # Process a single Hi-C file
+    def run():
+        outdir.mkdir(parents=True, exist_ok=True)
+
+        # Read Hi-C and run LAMMPS
+        hic = HIC(input)
+        input_records = hic.get_contact_records(settings)
+        input_set = contact_records_to_set(input_records)
+        lammps_data = run_lammps(input_set, settings, copy_log_to=results['log'])
+        last_timestep = lammps_data[ sorted(lammps_data.keys())[-1] ]
+        #output_set = find_contacts(last_timestep, settings)
+
+        # Save output data
+        write_structure(results['structure'], last_timestep)
+        write_contact_records(results['contactmap'], input_records)
+        pass
+
     # Load the settings used for the last run (if there are any)
     try:
-        with open(settings_file, 'r') as f:
+        with open(results['settings'], 'r') as f:
             previous_settings = json.load(f)
     except:
         previous_settings = None
@@ -181,21 +201,15 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
             info("Processing Hi-C file...")
             outdir.mkdir(parents=False, exist_ok=True)
 
-            # Run in temp directory
-            with tempfile.TemporaryDirectory() as tmpdir:
-                tmpdir_path = Path(tmpdir)
-
-                try:
-                    results = hic2structure.process_hic(input, outdir, settings)
-                except Exception as e:
-                    log_path = results['log'].relative_to(OUTDIR)
-                    error(f"Error running LAMMPS! A log may be available in the output directory in {log_path}")
-                    raise e
-
-            # (Temporary directory destroyed)
+            try:
+                run()
+            except Exception as e:
+                log_path = results['log'].relative_to(OUTDIR)
+                error(f"Error running LAMMPS! A log may be available in the output directory in {log_path}")
+                raise e
 
             # Save settings that were used
-            with open(settings_file, 'w') as f:
+            with open(results['settings'], 'w') as f:
                 json.dump(settings, f)
 
             # Update last-modified time on output directory
@@ -205,7 +219,7 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
             error(f"An error occured processing the Hi-C file: {e}")
             # If an error occured, we delete the settings file so that
             # the next run will always be attempted
-            settings_file.unlink(missing_ok=True)
+            results['settings'].unlink(missing_ok=True)
             raise e
 
     return results

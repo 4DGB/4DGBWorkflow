@@ -55,8 +55,6 @@
         "contactmapcanvas": {
             "width": 300,
             "height": 300,
-            "magnify": 1,
-            "threshold" : 0.1,
             "background" : "0xFFFFFF",
             "colormap" : "rainbow"
         },
