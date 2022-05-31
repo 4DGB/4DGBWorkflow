@@ -154,6 +154,8 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
         'settings':   (outdir/'settings.json').resolve(),
         'structure':  (outdir/'structure.csv').resolve(),
         'contactmap': (outdir/'contactmap.tsv').resolve(),
+        'inputset':   (outdir/'inputset.tsv').resolve(),
+        'outputset':  (outdir/'outputset.tsv').resolve(),
         'log':        (outdir/'sim.log').resolve(),
     }
 
@@ -175,11 +177,13 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
         input_set = contact_records_to_set(input_records)
         lammps_data = run_lammps(input_set, settings, copy_log_to=results['log'])
         last_timestep = lammps_data[ sorted(lammps_data.keys())[-1] ]
-        #output_set = find_contacts(last_timestep, settings)
+        output_set = find_contacts(last_timestep, settings)
 
         # Save output data
         write_structure(results['structure'], last_timestep)
         write_contact_records(results['contactmap'], input_records)
+        write_contact_set(results['inputset'], input_set)
+        write_contact_set(results['outputset'], output_set)
         pass
 
     # Load the settings used for the last run (if there are any)
@@ -292,7 +296,9 @@ def dataset_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
         'name': result[1]['name'],
         'structure' : {
             'id': result[0],
-            'md-contact-map': result[0]
+            'md-contact-map': result[0],
+            'input_set':  str( result[2]['inputset'].relative_to(OUTDIR) ),
+            'output_set': str( result[2]['outputset'].relative_to(OUTDIR) )
         },
         'epigenetics': result[0]
     }
