@@ -11,10 +11,9 @@
 # launched the container.
 #
 # Usage:
-#   ./workflow.py INPUT_DIR OUTPUT_DIR PATH_TO_BROWSER_REPO
+#   ./workflow.py INPUT_DIR OUTPUT_DIR [PATH_TO_BROWSER_REPO]
 #
-#   (we need the path to the browser repository 'cuz we gotta run the
-#    db_pop script that's in there)
+#   (if 'db_pop' is in the PATH, then the last argument is not needed)
 #
 
 from asyncio.subprocess import STDOUT
@@ -68,15 +67,19 @@ DEFAULT_PROJECT = {
 }
 
 # Parse arguments
-if len(sys.argv) < 4:
-    print("Usage: ./workflow.py INPUT_DIR OUTPUT_DIR PATH_TO_BROWSER_REPO")
+if len(sys.argv) < 3:
+    print("Usage: ./workflow.py INPUT_DIR OUTPUT_DIR [PATH_TO_BROWSER_REPO]")
     exit(1)
 
 # Input/Output directories
-[ INDIR, OUTDIR, BROWSER_DIR ] = map(
+[ INDIR, OUTDIR ] = map(
     lambda dir: Path(dir).resolve(),
-    sys.argv[1:4]
+    sys.argv[1:3]
 )
+if len(sys.argv) > 3:
+    BROWSER_DIR = sys.argv[3]
+else:
+    BROWSER_DIR = None
 
 # Find project input file
 search = [ INDIR.joinpath(f) for f in ['workflow.yaml', 'project.yaml'] ]
@@ -367,10 +370,14 @@ def run_db_pop():
     '''
     Run the browser's db_pop script to generate the project database
     '''
-    db_pop = BROWSER_DIR.joinpath('bin', 'db_pop')
-    server_dir = BROWSER_DIR.joinpath('server')
+    db_pop = shutil.which('db_pop')
+    if db_pop is None:
+        if BROWSER_DIR is None:
+            raise EnvironmentError("Could not find db_pop script")
+        else:
+            db_pop = BROWSER_DIR.joinpath('bin', 'db_pop')
 
-    run = subprocess.run([db_pop, OUTDIR, server_dir],
+    run = subprocess.run([db_pop, OUTDIR],
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
     )
 
