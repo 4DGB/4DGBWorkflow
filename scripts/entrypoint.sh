@@ -13,7 +13,7 @@ if [ "$BROWSERCONTAINER" != "yes" ] ; then
     exit 1
 fi
 
-if [ "${NEWUID:-0}" -eq 0 ] || [ "${NEWGID:-0}" -eq 0 ] ; then
+if [ "${NEWUID:-0}" -eq 0 ] || [ "${NEWGID:-0}" -eq 0 ] && [ "${ROOTLESS:-no}" != "yes" ] ; then
     echo "Container cannot be run as root!" 1>&2
     exit 1
 fi
@@ -25,10 +25,7 @@ if [ "$MODE" = "production" ] ; then
     set -e
     gosu "$NEWUID:$NEWGID" ./scripts/docker-setup.sh /project
 elif [ "$MODE" = "local" ] ; then
-    echo -ne "\e[1m> Workflow version: \e[0m"
-    cat ./version.txt
-    echo -ne "\e[1m> Browser version:  \e[0m"
-    cat /opt/git/4dgb/server/version.md
+    ./scripts/docker-version.sh
 
     echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
 
@@ -40,7 +37,7 @@ elif [ "$MODE" = "local" ] ; then
         exit 1
     fi
 
-    # These arguments are provided by the run_project script.
+    # These arguments are provided by the runner script.
     # They don't affect the actual configuration. They're only
     # used so that the script can give the user the correct URL
     PORT="$1"

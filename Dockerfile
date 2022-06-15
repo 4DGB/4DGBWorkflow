@@ -1,17 +1,16 @@
 #
 # Dockerfile for the 4DGB Browser Workflow
 #
-# This is a multi-stage build. The first stage exists mostly just to build
-# the client-side code for the server (which requires nodejs and webpack and
-# such), then the second stage installs and sets up everything needed for the
-# workflow
+# This is a multi-stage build. The first stage builds the client-side
+# javascript library for the server, the second stage builds all Python
+# dependencies, and the third stage brings it all together
 #
 # When running, the container's entrypoint script will do all the processing,
 # but it requires two environment variables to be set: NEWUID and NEWGID.
 # These specify the user and group ID's of the user running the container
 # so that the files output by the script will be owned by the user. To ensure
 # these variables are properly set, please run the container via the helper
-# script, 4dgb-workflow
+# script, 4DGBWorkflow
 #
 
 ##############################
@@ -21,10 +20,10 @@ FROM node:16-alpine as js
 
 # Build Browser JS
 COPY submodules/4DGB /opt/git/4dgb
-RUN cd /opt/git/4dgb \
+RUN cd /opt/git/4dgb/client-js \
     && npm install \
-    && npx webpack --config client-js/webpack.config.js \
-    && cp  client-js/gtk-dist/gtk.min.js /root/gtk.min.js
+    && NODE_ENV=production npx webpack \
+    && cp  gtk-dist/gtk.min.js /root/gtk.min.js
 
 ##############################
 # Stage 2: Python dependencies
@@ -38,7 +37,7 @@ RUN pip3 install wheel \
 
 # Install hic2structure.py script
 COPY submodules/3DStructure /opt/git/3DStructure
-RUN cd /opt/git/3DStructure/src \
+RUN cd /opt/git/3DStructure/ \
     && pip3 wheel . --wheel-dir /root/wheels
 
 ##############################

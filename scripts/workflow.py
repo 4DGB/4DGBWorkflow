@@ -77,7 +77,7 @@ if len(sys.argv) < 3:
     sys.argv[1:3]
 )
 if len(sys.argv) > 3:
-    BROWSER_DIR = sys.argv[3]
+    BROWSER_DIR = Path(sys.argv[3])
 else:
     BROWSER_DIR = None
 

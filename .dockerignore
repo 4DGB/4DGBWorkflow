@@ -15,5 +15,5 @@ submodules/4DGB/
 !submodules/4DGB/bin/db_pop
 
 submodules/3DStructure/
-!submodules/3DStructure/src/
-
+!submodules/3DStructure/hic2structure
+!submodules/3DStructure/setup.py

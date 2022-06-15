@@ -5,6 +5,12 @@
 # a development environment with the submodules' packages available and
 # exports the workflow.py script as a package (called '4dgb-workflow-build')
 #
+# NOTE:
+#   Using this flake requires that submodules be included. So commands
+#   must provide the '?submodules=1' when specifying the flake. Example:
+#
+#     nix build '.?submodules=1#workflow-build'
+#
 {
   description = "Python module for processing Hi-C files through LAMMPS";
 
