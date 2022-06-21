@@ -52,6 +52,10 @@ def do_main(args):
 
     DRY_RUN=args.dry
 
+    if 'func' not in args:
+        parser.print_help()
+        sys.exit()
+
     # Execute function for specific command
     args.func(args)
 
