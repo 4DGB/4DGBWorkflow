@@ -418,7 +418,8 @@ def main():
     with open(OUTDIR.joinpath("project.json"), 'w') as f:
         json.dump(out_project, f)
 
-    make_tracks()
+    if ('tracks' in project) and len(project['tracks']) > 0:
+        make_tracks()
 
     run_db_pop()
 
