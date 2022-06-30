@@ -82,12 +82,15 @@ else:
     BROWSER_DIR = None
 
 # Find project input file
-search = [ INDIR.joinpath(f) for f in ['workflow.yaml', 'project.yaml'] ]
+filenames = ['workflow.yaml', 'project.yaml', 'workflow.yml', 'project.yml']
+search = [ INDIR.joinpath(f) for f in filenames ]
 # Find and load file
 try:
     INPUT_FILE = next( f for f in search if f.is_file() )
 except StopIteration:
-    print(f"Could not find project file. (Looked for '{search[0]}' and '{search[1]}')")
+    print("Could not find project file. Please make sure your project directory has one of these files:")
+    for file in filenames:
+        print(f"  - {file}")
     exit(1)
 
 ####################################

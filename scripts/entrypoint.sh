@@ -18,25 +18,40 @@ if [ "${NEWUID:-0}" -eq 0 ] || [ "${NEWGID:-0}" -eq 0 ] && [ "${ROOTLESS:-no}" !
     exit 1
 fi
 
-set -u
+set -eu
 
+# Report version
+./scripts/docker-version.sh
 
-if [ "$MODE" = "production" ] ; then
-    set -e
-    gosu "$NEWUID:$NEWGID" ./scripts/docker-setup.sh /project
-elif [ "$MODE" = "local" ] ; then
-    ./scripts/docker-version.sh
+#
+# Build project
+#
 
-    echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
+echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
+gosu "$NEWUID:$NEWGID" python3 ./scripts/workflow.py /project{,/.build} /opt/git/4dgb/
 
-    # Run setup
-    if ! gosu "$NEWUID:$NEWGID" \
-        ./scripts/docker-setup.sh /project
-    then
-        echo -e "\e[1m[\e[91mERROR\e[0m\e[1m]:\e[0m Build failed :(" >&2
-        exit 1
-    fi
+#
+# Exit here if in BUILDONLY mode
+#
+if [ "${BUILDONLY:-no}" == "yes" ] ; then
+    exit
+fi
 
+#
+# Run Gunicorn
+#
+
+GUNICORN_CONF="$(pwd)/conf/gunicorn.conf.py"
+(
+    cd /opt/git/4dgb/server
+    export PROJECT_HOME="/project/.build"
+    gosu "$NEWUID:$NEWGID" gunicorn --config "$GUNICORN_CONF"
+)
+
+#
+# Print some user-friendly info if in local mode
+#
+if [ "$MODE" = "local" ] ; then
     # These arguments are provided by the runner script.
     # They don't affect the actual configuration. They're only
     # used so that the script can give the user the correct URL
@@ -54,11 +69,9 @@ elif [ "$MODE" = "local" ] ; then
         \e[1m# Press [Ctrl-C] to exit
         \e[1m#
         "
-
-else
-    echo "Invalid 'MODE' environment variable. Must be either 'local' or 'production'" 1>&2
-    exit 1
 fi
 
+#
 # Start nginx
+#
 gosu www-data:tty nginx
