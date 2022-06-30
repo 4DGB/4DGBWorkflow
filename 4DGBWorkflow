@@ -135,7 +135,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--container",
-    type=str, default="4dgb/workbench"
+    type=str, default="4dgb/4dgbworkflow-tool"
 )
 parser.add_argument(
     "-t", "--tag",

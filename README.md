@@ -35,18 +35,18 @@ git submodule update --init
 3. Build the Docker image.
 
 ```sh
-docker build -t 4dgb/workbench:latest .
+docker build -t 4dgb/4dgbworkflow-tool:latest .
 ```
 
 4. Run the browser!
 
 ```sh
-./4dgb-workflow /path/to/project/directory/
+./4DGBWorkflow run /path/to/project/directory/
 ```
 
 **Example output:**
 ```
-$ ./4dgb-workflow ./example_project
+$ ./4DGBWorkflow run ./example_project
 [>]: Building project... (this may take a while)
 
         #
