@@ -156,14 +156,9 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
     Returns a dict of Paths to the various output files
     '''
 
-    results = {
-        'settings':   (outdir/'settings.json').resolve(),
-        'structure':  (outdir/'structure.csv').resolve(),
-        'contactmap': (outdir/'contactmap.tsv').resolve(),
-        'inputset':   (outdir/'inputset.tsv').resolve(),
-        'outputset':  (outdir/'outputset.tsv').resolve(),
-        'log':        (outdir/'sim.log').resolve(),
-    }
+    # Create path for an output file
+    def outfile(name):
+        return (outdir/name).resolve()
 
     # Print info about current processing run
     def info(message):
@@ -172,6 +167,16 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
     # Print error for current processing run
     def error(message):
         print(f"  \033[1m[\033[31mX\033[0m\033[1m {input.name}]:\033[0m {message}")
+
+    # Result/output files
+    results = {
+        'settings':   outfile('settings.json'),
+        'structure':  outfile('structure.csv'),
+        'contactmap': outfile('contactmap.tsv'),
+        'inputset':   outfile('inputset.tsv'),
+        'outputset':  outfile('outputset.tsv'),
+        'log':        outfile('sim.log'),
+    }
 
     # Process a single Hi-C file
     def run():
@@ -210,6 +215,10 @@ def process_hic(settings: Settings, input: Path, outdir: Path):
         try:
             info("Processing Hi-C file...")
             outdir.mkdir(parents=False, exist_ok=True)
+
+            # Remove any previous output files
+            for file in results.values():
+                file.unlink(missing_ok=True)
 
             try:
                 run()
