@@ -313,7 +313,8 @@ def dataset_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
             'id': result[0],
             'md-contact-map': result[0],
             'input_set':  str( result[2]['inputset'].relative_to(OUTDIR) ),
-            'output_set': str( result[2]['outputset'].relative_to(OUTDIR) )
+            'output_set': str( result[2]['outputset'].relative_to(OUTDIR) ),
+            'settings': str( result[2]['settings'].relative_to(OUTDIR) )
         },
         'epigenetics': result[0]
     }
@@ -321,13 +322,25 @@ def dataset_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
 def track_data_entries(tracks: list[dict]) -> list:
     '''
     Create an entry for the project.json's 'array' field for the given
-    track data from the project input.
+    track data from the input project.
     '''
     return [{
         'id': i,
         'url': f"tracks/{track['name']}/track.json"
     }
     for i,track in enumerate(tracks)]
+
+def annotation_entry(annotation: dict) -> dict:
+    '''
+    Create an entry for the project.json's 'annotations' field for the given
+    annotation data from the input project.
+    '''
+    annotations_file = INDIR.joinpath(annotation['file'])
+
+    return {
+        'url': annotations_file.name,
+        'citation': annotation['description']
+    }
 
 def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dict:
     '''
@@ -339,12 +352,28 @@ def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dic
     out_project['project']['name'] = project['project']['name']
     out_project['project']['interval'] = project['project']['interval']
 
-    out_project['data']['array'] = track_data_entries(project['tracks'])
+    if ('tracks' in project) and len(project['tracks']) > 0:
+        out_project['data']['array'] = track_data_entries(project['tracks'])
+    
+    if ('annotation' in project):
+        out_project['data']['annotations'] = annotation_entry(project['annotation'])
 
     for result in results:
         out_project['data']['md-contact-map'].append( contact_map_entry(project, result) )
         out_project['data']['structure'].append( structure_entry(project, result) )
         out_project['datasets'].append( dataset_entry(project, result) )
+
+    # Fill out favorite locations/genes
+    if ('bookmarks' in project):
+        controls = out_project['application']['gtk']['controlpanel']
+        # Locations
+        if ('locations' in project['bookmarks']):
+            locs = project['bookmarks']['locations']
+            controls['location']['favorites'] = [ f"{l[0]}-{l[1]}" for l in locs ]
+        # Genes
+        if ('genes' in project['bookmarks']):
+            genes = project['bookmarks']['genes']
+            controls['gene']['favorites'] = genes
 
     return out_project
 
@@ -430,8 +459,15 @@ def main():
     with open(OUTDIR.joinpath("project.json"), 'w') as f:
         json.dump(out_project, f)
 
+    # Generate tracks
     if ('tracks' in project) and len(project['tracks']) > 0:
         make_tracks()
+
+    # Copy annotation file
+    if ('annotation' in project):
+        src = INDIR.joinpath( project['annotation']['file'] )
+        dest = OUTDIR.joinpath( src.name )
+        shutil.copy2(src, dest)
 
     run_db_pop()
 

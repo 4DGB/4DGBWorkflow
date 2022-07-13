@@ -20,6 +20,14 @@ fi
 
 set -eu
 
+function run_as_user {
+    if [ "${ROOTLESS:-no}" = "yes" ] ; then
+        "$@"
+    else
+        gosu "$NEWUID:$NEWGID" "$@"
+    fi;
+}
+
 # Report version
 ./scripts/docker-version.sh
 
@@ -28,7 +36,7 @@ set -eu
 #
 
 echo -e "\e[1m[\e[32m>\e[0m\e[1m]:\e[0m Building project... (this may take a while)" >&2
-gosu "$NEWUID:$NEWGID" python3 ./scripts/workflow.py /project{,/.build} /opt/git/4dgb/
+run_as_user python3 ./scripts/workflow.py /project{,/.build} /opt/git/4dgb/
 
 #
 # Exit here if in BUILDONLY mode
@@ -45,7 +53,7 @@ GUNICORN_CONF="$(pwd)/conf/gunicorn.conf.py"
 (
     cd /opt/git/4dgb/server
     export PROJECT_HOME="/project/.build"
-    gosu "$NEWUID:$NEWGID" gunicorn --config "$GUNICORN_CONF"
+    run_as_user gunicorn --config "$GUNICORN_CONF"
 )
 
 #
