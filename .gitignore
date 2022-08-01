@@ -1,3 +1,6 @@
+4dgb.egg-info/
+build/
+dist/
 venv/
 test_project*/
 test_out/
