@@ -1,6 +1,10 @@
 #
 # Template for an example 4DGB Project
 #
+
+#
+# Define main project settings here:
+#
 project:
   # Make a name for your project
   name: "example_project"
@@ -11,6 +15,10 @@ project:
   # Only contacts with a value higher than this in the Hi-C
   # file will be used
   count_threshold: 2.0
+  # FENE bond coefficient used in LAMMPS simulation:
+  # If LAMMPS fails with a "bad FENE bond" error,
+  # try increasing this value
+  bond_coeff: 55
   # Hide a sequence of bins in the browser view.
   # The structure made from the example data
   # has a long "tail" at the start that we black-out
@@ -69,3 +77,30 @@ tracks:
       - name: "PC2"
       - name: "PC2"
         file: "chr22.tracks.12.csv"
+
+#
+# Include an annotation file here:
+#
+annotation:
+  file: "chr22.gff"
+  description: "Your description or citation here"
+
+#
+# Include "bookmarked" locations here.
+# These will appear in the drop-down menus
+# in the selection widget in the browser
+#
+bookmarks:
+  # Favorite locations,
+  # Defined as ranges of base-pairs
+  locations:
+    - [ 10600000, 28800000 ]
+    - [ 28800000, 49000000 ]
+  # Favorite genes
+  # Defined as the names specified in the
+  # annotation file
+  genes:
+    - "LOC105373060"
+    - "LOC105372863"
+    - "LOC107985541"
+    - "LOC102724608"
