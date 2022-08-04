@@ -23,7 +23,7 @@ project:
   # The structure made from the example data
   # has a long "tail" at the start that we black-out
   blackout:
-    - [1, 60]
+    - [1, 85]
 
 #
 # Define Datasets here:
@@ -31,9 +31,9 @@ project:
 #
 datasets:
   - name: "0 Hours"
-    data: "ENCLB571GEP.chr22.200kb.h5.hic"
+    data: "ENCLB571GEP.chr22.200kb.00hr.hic"
   - name: "12 Hours"
-    data: "ENCLB870JCZ.chr22.200kb.12.h5.hic"
+    data: "ENCLB870JCZ.chr22.200kb.12hr.hic"
 
 #
 # Define data tracks here:
@@ -44,39 +44,32 @@ datasets:
 tracks:
   # ATAC Data
   - name: "ATAC"
-    file: "chr22.tracks.csv"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
     columns:
       - name: "ATAC"
       - name: "ATAC"
-        file: "chr22.tracks.12.csv"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
   # H3K27ac Data
   - name: "H3K27ac"
-    file: "chr22.tracks.csv"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
     columns:
       - name: "H3K27ac"
       - name: "H3K27ac"
-        file: "chr22.tracks.12.csv"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
   # H3K9me3
   - name: "H3K9me3"
-    file: "chr22.tracks.csv"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
     columns:
       - name: "H3K9me3"
       - name: "H3K9me3"
-        file: "chr22.tracks.12.csv"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
   # PC1 Data
   - name: "PC1"
-    file: "chr22.tracks.csv"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
     columns:
       - name: "PC1"
       - name: "PC1"
-        file: "chr22.tracks.12.csv"
-  # PC2 Data
-  - name: "PC2"
-    file: "chr22.tracks.csv"
-    columns:
-      - name: "PC2"
-      - name: "PC2"
-        file: "chr22.tracks.12.csv"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
 
 #
 # Include an annotation file here:

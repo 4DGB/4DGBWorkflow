@@ -17,11 +17,11 @@ from pathlib import Path
 
 DIRECTORY=Path.joinpath(Path(__file__).parent, '..', 'example_project/')
 FILES=[
-    'chr22.tracks.12.csv',
-    'chr22.tracks.csv',
     'chr22.gff',
-    'ENCLB571GEP.chr22.200kb.h5.hic',
-    'ENCLB870JCZ.chr22.200kb.12.h5.hic',
+    'ENCLB571GEP.chr22.200kb.00hr.hic',
+    'ENCLB571GEP.chr22.200kb.00hr.tracks.csv',
+    'ENCLB870JCZ.chr22.200kb.12hr.hic',
+    'ENCLB870JCZ.chr22.200kb.12hr.tracks.csv',
     'project.yaml'
 ]
 
