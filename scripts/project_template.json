@@ -115,12 +115,12 @@
                         "type" : "arrow",
                         "color": "0x0091ea",
                         "endpoint":{ 
-                            "radius":   0.175, 
+                            "radius":   0.1, 
                             "segments": 16
                         },
                         "span":    { 
-                            "radius-beg": 0.1,
-                            "radius-end": 0.02
+                            "radius-beg": 0.05,
+                            "radius-end": 0.025
                         },
                         "ghost" : {
                             "opacity" : 0.2
