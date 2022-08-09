@@ -63,3 +63,7 @@ If this is the first time running a project, this may take a while, since it nee
 **Example Screenshot**
 
 ![](doc/example_screen.png)
+
+## Help for Maintainers
+
+See the [Publising](./doc/publishing.md) doc for information on publishing and releasing new versions.

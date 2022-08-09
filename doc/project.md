@@ -1,94 +1,62 @@
-# ``project.yaml`` Specification
+# Project Specification
 
-The input to the workflow is a directory with a file named `workflow.yaml` or `project.yaml` with the following values:
+The input to the workflow is a directory containing all of the input files alongside a file, `workflow.yaml` or `project.yaml` specifying the role of the files.
 
-```
-project:
-    name:       Project Name            (required)
-    interval:   integer                 (optional, default=200000)
-    annotation: file.gff3               (required)
-    blackout:   [a list of bead IDs]    (optional)
-    spector_correlation:    float       (optional global value)
+Please see the [example_project](../example_project/) directory for an example of such a project, and pay particular attention to the [project.yaml](../example_project/project.yaml) in it.
 
-sequence:
-    name:       name of sequence        (required)
-    data:       url of sequence         (required) 
+## `project.yaml` Fields
 
-tracks:
-   - name: trackname_01
-     file: input_01.csv
-     columns: 
-       - name: first
-       - name: second
-       - name: third
-   - name: trackname_02
-      file: input_01.csv
-      columns:
-        - name: first
-        - name: second
-        - name: fifth
-          file: input_02.csv
-    - ...
+(All file paths specified in the `project.yaml` file are considered relative to the project directory)
+### `workflow` (optional)
 
-datasets:
-    - name:     Name of first dataset   (optional)
-      hic:      somefile.ext            (required)
-      spector_correlation:  float       (optional override on global value)
-    - name:     Name of second dataset  (optional)
-      hic:      somefile.ext            (required)
-      spector_correlation:  float       (optional override on global value)
-```
+- `version`: Used to specify the version of the workflow the project is intended for.
 
-## Explanation of values
+### `project` (required)
 
-- **`spector_correlation`** A metric that compares the correlation between the contact map computed for the input `hic` data and a contact map computed after the structure for the `hic` data has been computed by the MD simulation. The user can set this value globally, and override it per dataset. If the correlation threshold is not met, the MD simulation will be re-computed until that value is met. See [spector correlation](spector.md) for more information.
-    
+Project settings. For the most part, these are used to adjust how the `.hic` files will be read
+and how LAMMPS will be run.
 
-## Computed Values
+- `name`: User-friendly name of the project
+- `interval`: The bin resolution in the `.hic` files to choose. **Default:** 200000
+- `chromosome`: The name of the chromosome in the `.hic` files to choose. **Default:** 'X'
+- `count_threshold`: Used to filter the contacts records from the `.hic` files to use in the simulation. Only records with a count higher than this will be used. **Default:** 2.0
+- `distance_threshold`: Used to filter the contact records from the structure output by the simulation. Only segments closer to each other than this value will be used (This only affects the display on the "intermediate data" page in the browser. The 3D structure is not filtered). **Default:** 3.3
+- `blackout`: A list of 2-long arrays, each specifying a range of segments in the structure. These segments are considered "unmapped" and will not be visible by default in the browser.
+- `bond_coeff`: The FENE bond coefficient used in the LAMMPS simulation. If LAMMPS fails with a "bad FENE bond" error, try increasing this value. **Default:** 55
 
-Quantities that are computed from input.
+### `datasets` (required)
 
-```
-num_beads = (num base pairs in sequence)/(project:interval)
-```
+A list of the two datasets to be compared in the browser. Each one is an object with the following fields:
 
-- **`beads`** a 1-based `integer` array of size `num_beads`, with IDs that go from 1 to (num_beads - 1) The first bead is at sequence position `interval`. Therefore, the first `[1, (interval - 1)]` beads are not represented in the 3D structure file.
+- `name`: User-friendly name for the dataset
+- `data`: Path to the `.hic` file for the dataset.
 
-## File Specifications
+### `tracks` (optional)
 
-### Structure `.csv` file
+Specify "tracks" of data. These are 1-dimensional sets of data that can be mapped along the structure. The `tracks` field is a list of individual track specifications. There can be as many tracks as you like, each one is specified with the following fields:
 
-A structure `.csv` file is a three-column csv file in which the first line names the coordinate `[x,y,z]` of the structure point. The ID of the point is the number of the line, where the first data line is ID `1`, and the ids increment by one until the last line. The file has `num_beads + 1` lines, the first of which is the name of the coordinate. There are three coordinates, and their order is not specified, but all three must be present. 
+Tracks are represented in `.csv` files. Each track specifies a file, and the name of a column within that file.
 
-```
-x,y,z
-0.0,0.0,0.0
-0.1,0.1,0.1
-0.2,0.2,0.2
-...
-```
+- `name`: Name of the track
+- `file`: Path to a `.csv` file containing the track data.
+- `columns`: List of two column specifications. The first one is mapped onto the first dataset, and the second onto the second dataset. Each of these have the following fields:
+    - `name`: Name of the column
+    - `file`: (optional) Used to override the file specified above.
 
-### Track data
+### `annotaions` (optional)
 
-A track is specified by a name, an input csv file and a list of column names in that file. The columns listed map directly onto the datasets in the `datasets` section. (So that first column belongs to the first dataset, the second to the second dataset and so on). Optionally, you can override the filename specified in each column so that a track can have data from seperate files.
+Annotations are sections of the structure that you can tag with names. They can come from two different sources: Genes specified in `.gff` file, or arbitary features described in a `.csv` file.
 
-Track data is parsed using the [csv2tracks](../scripts/csv2tracks) script. For more details, see its [documentation](readme_csv2tracks.md)
+- `genes`: Specify a source of annotations from a `.gff` flie.
+    - `file`: Path to `.gff` file to use.
+    - `description`: Description of the file/annotations
+- `features`: Specify a source of annotations from `.csv` file. This file must have the columns, `name`, `start`, `end`, `id`, and `type`. See the [features.csv](../example_project/features.csv) in the example project for an idea of how it works. The `id` and `type` columns can be whatever you like
+  - `file`: Path to the `.csv` file to use.
+  - `description`: Description of the file/annotations
 
-### Annotation `csv` file
+### `bookmarks` (optional)
 
-A general file for providing annotations for the workflow's sequence.
+In addition to the annotations specified above, you can "bookmark" your favorite locations or annotations, and they will appear in the drop-down menus to select them in the browser.
 
-```
-name:   a string naming the annotation
-start:  the 1-based ID of the start position in the sequence
-end:    the 1-based ID of the end position in the sequence
-id:     an identified for the annotation
-type:   one of [gene, megadomain, or other user-defined type]
-```
-
-Example of the `annotation.csv` file:
-```
-name,start,end,id,type
-first,100000,200000,CEN,megadomain
-second,200000,300000,CEN,megadomain
-```
+- `locations`: A list of 2-long arrays, each specifying a range of locations (in basepairs) to bookmark.
+- `features`: A list of names of annotations (either from the `genes` or `features`) to bookmark.
