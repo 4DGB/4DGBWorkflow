@@ -28,6 +28,15 @@ docker push 4dgb/4dgbworkflow-tool:latest
 docker push 4dgb/4dgbworkflow-tool:1.1.0
 ```
 
+6. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will
+create a clean version of the `4dgb-workflow` module, and attempt to upload it to `pypi` with `twine`.
+If `twine` is not installed, or if you do not have permission to upload the module to `pypi`, this 
+will fail.
+
+```
+    make module
+```
+
 ## If you changed the Example Project
 
 If your changes affected the example project in the [example_project](../example_project/) directory, then you'll need to update the version embedded in the [4DGBWorkflow](../4DGBWorkflow) script.
