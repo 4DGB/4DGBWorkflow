@@ -18,6 +18,7 @@ from pathlib import Path
 DIRECTORY=Path.joinpath(Path(__file__).parent, '..', 'example_project/')
 FILES=[
     'chr22.gff',
+    'features.csv',
     'ENCLB571GEP.chr22.200kb.00hr.hic',
     'ENCLB571GEP.chr22.200kb.00hr.tracks.csv',
     'ENCLB870JCZ.chr22.200kb.12hr.hic',

@@ -7,7 +7,7 @@
 # in the format the 4DGB Browser expects.
 #
 # This script runs *inside* the Docker container. Specifically, it's called by
-# the docker-setup.sh script and is run with the permissions of the user who
+# the entrypoint.sh script and is run with the permissions of the user who
 # launched the container.
 #
 # Usage:
@@ -330,16 +330,16 @@ def track_data_entries(tracks: list[dict]) -> list:
     }
     for i,track in enumerate(tracks)]
 
-def annotation_entry(annotation: dict) -> dict:
+def annotation_entry(genes: dict) -> dict:
     '''
     Create an entry for the project.json's 'annotations' field for the given
-    annotation data from the input project.
+    gene annotation data from the input project.
     '''
-    annotations_file = INDIR.joinpath(annotation['file'])
+    annotations_file = INDIR.joinpath(genes['file'])
 
     return {
         'url': annotations_file.name,
-        'citation': annotation['description']
+        'citation': genes['description']
     }
 
 def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dict:
@@ -355,8 +355,10 @@ def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dic
     if ('tracks' in project) and len(project['tracks']) > 0:
         out_project['data']['array'] = track_data_entries(project['tracks'])
     
-    if ('annotation' in project):
-        out_project['data']['annotations'] = annotation_entry(project['annotation'])
+    if ('annotations' in project):
+        annotations = project['annotations']
+        if ('genes' in annotations):
+            out_project['data']['annotations'] = annotation_entry( annotations['genes'] )
 
     for result in results:
         out_project['data']['md-contact-map'].append( contact_map_entry(project, result) )
@@ -365,15 +367,15 @@ def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dic
 
     # Fill out favorite locations/genes
     if ('bookmarks' in project):
+        bookmarks = project['bookmarks']
         controls = out_project['application']['gtk']['controlpanel']
         # Locations
-        if ('locations' in project['bookmarks']):
-            locs = project['bookmarks']['locations']
+        if ('locations' in bookmarks):
+            locs = bookmarks['locations']
             controls['location']['favorites'] = [ f"{l[0]}-{l[1]}" for l in locs ]
         # Genes
-        if ('genes' in project['bookmarks']):
-            genes = project['bookmarks']['genes']
-            controls['gene']['favorites'] = genes
+        if ('features' in bookmarks):
+            controls['gene']['favorites'] = bookmarks['features']
 
     return out_project
 
@@ -463,11 +465,21 @@ def main():
     if ('tracks' in project) and len(project['tracks']) > 0:
         make_tracks()
 
-    # Copy annotation file
-    if ('annotation' in project):
-        src = INDIR.joinpath( project['annotation']['file'] )
-        dest = OUTDIR.joinpath( src.name )
-        shutil.copy2(src, dest)
+    # Copy annotation files
+    if ('annotations' in project):
+        anno = project['annotations']
+        # The 'genes' annotation file is specified in the output
+        # project.json while the 'features' annotation file
+        # goes into a hard-coded location
+        if ('genes' in anno):
+            src  = INDIR.joinpath( anno['genes']['file'] )
+            dest = OUTDIR.joinpath( src.name )
+            shutil.copy2(src, dest)
+        if ('features' in anno):
+            src  = INDIR.joinpath( anno['features']['file'] )
+            dest = OUTDIR.joinpath('source', 'annotations.csv')
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
 
     run_db_pop()
 

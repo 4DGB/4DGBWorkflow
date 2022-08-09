@@ -4,9 +4,12 @@
 
 #
 # Workflow settings
+# You can specify the version of the
+# workflow this project is for here
 #
 workflow:
-  version: "1.0.0"
+  version: "1.1.0"
+
 #
 # Define main project settings here:
 #
@@ -77,11 +80,15 @@ tracks:
         file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
 
 #
-# Include an annotation file here:
+# Include annotation files here:
 #
-annotation:
-  file: "chr22.gff"
-  description: "Your description or citation here"
+annotations:
+  genes:
+    file: "chr22.gff"
+    description: "Your description or citation here"
+  features:
+    file: "features.csv"
+    description: "Your description or citation here"
 
 #
 # Include "bookmarked" locations here.
@@ -94,11 +101,14 @@ bookmarks:
   locations:
     - [ 10600000, 28800000 ]
     - [ 28800000, 49000000 ]
-  # Favorite genes
-  # Defined as the names specified in the
-  # annotation file
-  genes:
+  # Favorite Features
+  # Defined as the names specified in either
+  # the genes or features annotation files
+  features:
     - "LOC105373060"
     - "LOC105372863"
     - "LOC107985541"
     - "LOC102724608"
+    - "firsthalf"
+    - "secondhalf"
+    - "sticky_outy_bit"

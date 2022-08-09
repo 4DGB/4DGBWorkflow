@@ -1,0 +1,4 @@
+name,start,end,id,type
+firsthalf,25700000,50800000,firsthalf,feature
+secondhalf,25700000,50800000,secondhalf,feature
+sticky_outy_bit,18200000,19000000,sticky_outy_bit,feature
