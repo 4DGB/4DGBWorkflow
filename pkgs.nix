@@ -7,9 +7,9 @@
 let
   # Workflow source files
   workflow-src = pkgs.linkFarm "workflow-src" [
-    { name = "workflow.py"; path = ./scripts/workflow.py; }
-    { name = "project_template.json"; path = ./scripts/project_template.json; }
-    { name = "csv2tracks"; path = ./scripts/csv2tracks; }
+    { name = "workflow.py"; path = ./build_stage/scripts/workflow.py; }
+    { name = "project_template.json"; path = ./build_stage/scripts/project_template.json; }
+    { name = "csv2tracks"; path = ./build_stage/scripts/csv2tracks; }
   ];
 
   # Workflow script

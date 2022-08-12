@@ -21,7 +21,7 @@ class TestCSV2Tracks(unittest.TestCase):
         """
         # create the destination directory; copy files
         shutil.copytree(TestCSV2Tracks.data_dir, TestCSV2Tracks.scratch_dir)
-        os.system("./scripts/csv2tracks --workflow {}/workflow.yaml --destination {}".format(
+        os.system("./build_stage/scripts/csv2tracks --workflow {}/workflow.yaml --destination {}".format(
                         TestCSV2Tracks.scratch_dir, TestCSV2Tracks.dest_dir))
 
         # load and inspect data

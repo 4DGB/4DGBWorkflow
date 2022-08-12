@@ -4,28 +4,32 @@ Follow these steps when you're ready to publish and release a new version of the
 
 1. Update the verison number in [version.txt](../version.txt).
 
-2. Rebuild the Docker image
+2. Rebuild the Docker images
 ```sh
-docker build -t 4dgb/4dgbworkflow-tool:latest .
+make docker
 ```
 
 3. Test with the `4DGBWorkflow version` command. You should see your new version number reported.
 ```sh
-./4DGBWorkflow version
-> Docker container tag: latest
-> Workflow version: v1.1.0
-> Browser version: v1.4.0
+Workflow Container: 4dgb/4dgbworkflow-build:latest
+       Version: v1.1.0
+Browser Container:  4dgb/4dgbworkflow-view:latest
+       Version: v1.5.1
 ```
 
-4. Tag the new docker image with your new version number.
+4. Tag the new docker images with your new version number.
 ```sh
-docker tag 4dgb/4dgbworkflow-tool:latest 4dgb/4dgbworkflow-tool:1.1.0
+docker tag 4dgb/4dgbworkflow-build:latest 4dgb/4dgbworkflow-build:1.1.0
+docker tag 4dgb/4dgbworkflow-view:latest 4dgb/4dgbworkflow-view:1.1.0
 ```
 
 5. Push both tags to DockerHub (You'll need to be logged into an account with permissions to do so)
 ```sh
-docker push 4dgb/4dgbworkflow-tool:latest
-docker push 4dgb/4dgbworkflow-tool:1.1.0
+docker push 4dgb/4dgbworkflow-build:latest
+docker push 4dgb/4dgbworkflow-build:1.1.0
+
+docker push 4dgb/4dgbworkflow-view:latest
+docker push 4dgb/4dgbworkflow-view:1.1.0
 ```
 
 6. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will

@@ -32,10 +32,10 @@ datasets:
 git submodule update --init
 ```
 
-3. Build the Docker image.
+3. Build the Docker images.
 
 ```sh
-docker build -t 4dgb/4dgbworkflow-tool:latest .
+make docker
 ```
 
 4. Run the browser!

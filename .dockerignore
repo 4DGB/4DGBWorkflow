@@ -17,3 +17,4 @@ submodules/4DGB/
 submodules/3DStructure/
 !submodules/3DStructure/hic2structure
 !submodules/3DStructure/setup.py
+!submodules/3DStructure/requirements.txt

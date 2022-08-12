@@ -17,7 +17,6 @@
 #
 
 from asyncio.subprocess import STDOUT
-from cgitb import text
 import sys
 import os
 import copy
