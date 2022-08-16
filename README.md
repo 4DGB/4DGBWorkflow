@@ -6,6 +6,8 @@ A dockerized application implementing an end-to-end workflow to process Hi-C dat
 
 The workflow takes ```.hic``` data, processes the data and creates a running server that can be used to view the data with a web browser. The system takes advantage of previous runs, so if you've already computed some data, it won't be recomputed the next time the workflow is run. 
 
+The workflow is split into two stages: "Build" and "View". Each implemented with a separate docker image. The Build stage does most of the computation (including the most expensive part, running the LAMMPS simulation) and outputs a project suitable for viewing with the [4D Genome Browser](https://github.com/lanl/4DGB). The View stage simply creates an instance of this browser, allowing the user to view their project.
+
 ## Setting up Input Data
 
 1. Create a directory to contain all of your input data. In it, create a `workflow.yaml` file with the following format:
