@@ -9,11 +9,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-9qOQt96UMvMBqreH3mT0GJ1AtI1J8zmW9GnKH+unD7E=",
-        "path": "/nix/store/rpi6179wzn2hvc3gw01y3nrxp2q2p9yg-source/submodules/4DGB",
+        "path": "/nix/store/a4y6dr3l32npnp3vg6w0cqlssj9gxgm7-source/submodules/4DGB",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/rpi6179wzn2hvc3gw01y3nrxp2q2p9yg-source/submodules/4DGB",
+        "path": "/nix/store/a4y6dr3l32npnp3vg6w0cqlssj9gxgm7-source/submodules/4DGB",
         "type": "path"
       }
     },
@@ -119,11 +119,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7nUUvnxozptccl/lErLcLZgkR5hgPTuL5vYQF2e/ZM4=",
-        "path": "/nix/store/rpi6179wzn2hvc3gw01y3nrxp2q2p9yg-source/submodules/3DStructure",
+        "path": "/nix/store/a4y6dr3l32npnp3vg6w0cqlssj9gxgm7-source/submodules/3DStructure",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/rpi6179wzn2hvc3gw01y3nrxp2q2p9yg-source/submodules/3DStructure",
+        "path": "/nix/store/a4y6dr3l32npnp3vg6w0cqlssj9gxgm7-source/submodules/3DStructure",
         "type": "path"
       }
     },

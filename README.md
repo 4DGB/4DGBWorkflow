@@ -69,3 +69,22 @@ If this is the first time running a project, this may take a while, since it nee
 ## Help for Maintainers
 
 See the [Publising](./doc/publishing.md) doc for information on publishing and releasing new versions.
+
+## ❄️ For Nix Users
+
+For initiates of the [NixOS cult](https://nixos.org/), there is a Nix Flake which exports a package of the workflow builder as well as development environment in which you can easily run the workflow. Each submodule also has its in own flake exporting relevant packages.
+
+To enter the development environment (you need to enable submodules):
+```sh
+nix develop '.?submodules=1'
+```
+
+To build a project and run the browser:
+```sh
+# Build the workflow script
+nix build '.?submodules=1#workflow-build'
+# Run the just-built workflow
+./result/bin/4dgb-workflow-build example_project/ example_out/
+# Run the browser (which is available in the PATH in the dev environment)
+PROJECT_HOME=example_out/ gtkserver.py
+```
