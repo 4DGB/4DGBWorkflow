@@ -46,6 +46,10 @@ will fail.
     make module
 ```
 
+8. Update documentation at ``4dgb.readthedocs.io`` but updating the associated repository at 
+``github.com/4dgb/4dgb-docs``
+
+
 ## If you changed the Example Project
 
 If your changes affected the example project in the [example_project](../example_project/) directory, then you'll need to update the version embedded in the [4DGBWorkflow](../4DGBWorkflow) script.
