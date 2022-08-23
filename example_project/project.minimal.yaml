@@ -1,26 +1,9 @@
-#
-# Workflow settings
-# DO NOT MODIFY THIS SECTION
-#
-workflow:
-  version: "1.2.0"
-
-#
-# Define main project settings here:
-#
 project:
-  # Select chromosome in Hi-C file to use
   chromosome: 'chr22'
-  # Select bin resolution in Hi-C file to use
   interval: 200000
 
-#
-# Define Datasets here:
-# Each dataset has a name and a path to a Hi-C file
-#
 datasets:
   - name: "0 Hours"
     data: "ENCLB571GEP.chr22.200kb.00hr.hic"
   - name: "12 Hours"
     data: "ENCLB870JCZ.chr22.200kb.12hr.hic"
-
