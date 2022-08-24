@@ -1,9 +1,0 @@
-project:
-  chromosome: 'chr22'
-  interval: 200000
-
-datasets:
-  - name: "0 Hours"
-    data: "ENCLB571GEP.chr22.200kb.00hr.hic"
-  - name: "12 Hours"
-    data: "ENCLB870JCZ.chr22.200kb.12hr.hic"

@@ -1,0 +1,24 @@
+project:
+  chromosome: 'chr22'
+  blackout:
+    - [1, 85]
+
+datasets:
+  - name: "0 Hours"
+    data: "ENCLB571GEP.chr22.200kb.00hr.hic"
+  - name: "12 Hours"
+    data: "ENCLB870JCZ.chr22.200kb.12hr.hic"
+
+tracks:
+  - name: "ATAC"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
+    columns:
+      - name: "ATAC"
+      - name: "ATAC"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
+  - name: "H3K27ac"
+    file: "ENCLB571GEP.chr22.200kb.00hr.tracks.csv"
+    columns:
+      - name: "H3K27ac"
+      - name: "H3K27ac"
+        file: "ENCLB870JCZ.chr22.200kb.12hr.tracks.csv"
