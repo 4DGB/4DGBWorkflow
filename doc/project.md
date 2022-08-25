@@ -17,7 +17,7 @@ Project settings. For the most part, these are used to adjust how the `.hic` fil
 and how LAMMPS will be run.
 
 - `name`: User-friendly name of the project
-- `interval`: The bin resolution in the `.hic` files to choose. **Default:** 200000
+- `resolution`: The bin resolution in the `.hic` files to choose. **Default:** 200000
 - `chromosome`: The name of the chromosome in the `.hic` files to choose. **Default:** 'X'
 - `count_threshold`: Used to filter the contacts records from the `.hic` files to use in the simulation. Only records with a count higher than this will be used. **Default:** 2.0
 - `distance_threshold`: Used to filter the contact records from the structure output by the simulation. Only segments closer to each other than this value will be used (This only affects the display on the "intermediate data" page in the browser. The 3D structure is not filtered). **Default:** 3.3

@@ -6,10 +6,6 @@
 # LAMMPS simulations, etc. and ultimatly outputting a directory with a "project"
 # in the format the 4DGB Browser expects.
 #
-# This script runs *inside* the Docker container. Specifically, it's called by
-# the entrypoint.sh script and is run with the permissions of the user who
-# launched the container.
-#
 # Usage:
 #   ./workflow.py INPUT_DIR OUTPUT_DIR [PATH_TO_BROWSER_REPO]
 #
@@ -53,7 +49,7 @@ with open(TEMPLATE_FILE, 'r') as f:
 DEFAULT_PROJECT = {
     'project': {
         'name': "Untitled",
-        'interval': 200000,
+        'resolution': 200000,
         'chromosome': 'X',
         'count_threshold': 2.0,
         'distance_threshold': 3.3,
@@ -135,7 +131,7 @@ def settings_from_project(project_spec: dict) -> Settings:
         'chromosome': project['chromosome'],
         'count_threshold':  project['count_threshold'],
         'distance_threshold':  project['distance_threshold'],
-        'resolution': project['interval'],
+        'resolution': project['resolution'],
         'bond_coeff': project['bond_coeff'],
         'timesteps':  project['timesteps']
     }
@@ -272,7 +268,7 @@ def contact_map_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
         'id': result[0],
         'version': "1.0",
         'url': str( result[2]['contactmap'].relative_to(OUTDIR) ),
-        'interval': project['project']['interval']
+        'interval': project['project']['resolution']
     }
 
 def structure_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
@@ -297,7 +293,7 @@ def structure_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
         'unmapped_segments': project['project']['blackout'],
         'num_segments': num_segments,
         'url': str( result[2]['structure'].relative_to(OUTDIR) ),
-        'interval': project['project']['interval']
+        'interval': project['project']['resolution']
     }
 
 def dataset_entry(project: dict, result: tuple[int,dict,dict]) -> dict:
@@ -349,7 +345,7 @@ def make_project_json(project: dict, results: list[tuple[int,dict,dict]]) -> dic
     out_project = copy.deepcopy(BROWSER_PROJECT_TEMPLATE)
 
     out_project['project']['name'] = project['project']['name']
-    out_project['project']['interval'] = project['project']['interval']
+    out_project['project']['interval'] = project['project']['resolution']
 
     if ('tracks' in project) and len(project['tracks']) > 0:
         out_project['data']['array'] = track_data_entries(project['tracks'])

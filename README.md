@@ -14,8 +14,7 @@ The workflow is split into two stages: "Build" and "View". Each implemented with
 
 ```yaml
 project:
-  name: "My Project"
-  interval: 200000 # optional (defaults to 200000)
+  resolution: 200000 # optional (defaults to 200000)
   chromosome: X    # optional (defaults to 'X')
   count_threshold:  2.0  # optional (defaults to 2.0)
 
