@@ -17,4 +17,6 @@ module:
 	rm -rf dist
 	rm -rf *.egg-info
 	python3 setup.py sdist
+
+module-upload:
 	twine upload dist/*
