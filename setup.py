@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'doc/description.md'), encoding='utf-8') as 
 this_directory = path.abspath(path.dirname(__file__))
 version = ""
 with open(path.join(this_directory, 'version.txt'), encoding='utf-8') as f:
-    version_text = (f.read().strip())[1:]
+    version_text = f.read().strip()
 
 setuptools.setup(
     name="4dgb-workflow",
