@@ -23,9 +23,9 @@ FILES=[
     'ENCLB571GEP.chr22.200kb.00hr.tracks.csv',
     'ENCLB870JCZ.chr22.200kb.12hr.hic',
     'ENCLB870JCZ.chr22.200kb.12hr.tracks.csv',
-    'project.min-with-tracks.yaml'
-    'project.min.yaml'
-    'project.full.yaml'
+    'project.min-with-tracks.yaml',
+    'project.min.yaml',
+    'project.full.yaml',
     'project.yaml'
 ]
 
