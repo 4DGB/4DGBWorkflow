@@ -22,31 +22,21 @@ Browser Container:  4dgb/4dgbworkflow-view:latest
        Version: v1.5.1
 ```
 
-5. Tag the new docker images with your new version number.
+5. Tag the new docker images with your new version number and push both tags to DockerHub (You'll need to be logged into an account with permissions to do so)
 ```sh
-docker tag 4dgb/4dgbworkflow-build:latest 4dgb/4dgbworkflow-build:1.1.0
-docker tag 4dgb/4dgbworkflow-view:latest 4dgb/4dgbworkflow-view:1.1.0
+make docker-tag
 ```
 
-6. Push both tags to DockerHub (You'll need to be logged into an account with permissions to do so)
-```sh
-docker push 4dgb/4dgbworkflow-build:latest
-docker push 4dgb/4dgbworkflow-build:1.1.0
-
-docker push 4dgb/4dgbworkflow-view:latest
-docker push 4dgb/4dgbworkflow-view:1.1.0
-```
-
-7. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will
+6. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will
 create a clean version of the `4dgb-workflow` module, and attempt to upload it to `pypi` with `twine`.
 If `twine` is not installed, or if you do not have permission to upload the module to `pypi`, this 
 will fail.
 
 ```
-    make module
+make module
 ```
 
-8. Update documentation at ``4dgb.readthedocs.io`` but updating the associated repository at 
+7. Update documentation at ``4dgb.readthedocs.io`` but updating the associated repository at 
 ``github.com/4dgb/4dgb-docs``
 
 
