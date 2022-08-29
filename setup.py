@@ -17,7 +17,7 @@ setuptools.setup(
     author="David H. Rogers",
     author_email="dhr@lanl.gov",
     description="4D Genome Browser Workflow.",
-    long_description="This is the long description",
+    long_description=long_description_text,
     long_description_content_type='text/markdown',
     url="https://github.com/4dgb/4DGBWorkflow",
     include_package_data=True,
