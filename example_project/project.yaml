@@ -8,7 +8,7 @@
 # workflow this project is for here
 #
 workflow:
-  version: "1.5.1"
+  version: "1.5.2"
 
 #
 # Define main project settings here:
