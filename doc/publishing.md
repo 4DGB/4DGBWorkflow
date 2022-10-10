@@ -13,7 +13,7 @@ python3 scripts/generate_blob.py
 
 3. You may want to re-create the template directory to make sure it works.
 ```
-./4DGBWorkflow version --output test
+./4DGBWorkflow template --output template-test
 ```
 
 ## Publishing a new version
