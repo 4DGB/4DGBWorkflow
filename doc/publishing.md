@@ -1,4 +1,22 @@
-# Publishing a new version
+# Releasing a new version to Docker Hub
+
+## If you changed the Example Project
+
+If your changes affected the example project in the [example_project](../example_project/) directory, then you'll need to update the version embedded in the [4DGBWorkflow](../4DGBWorkflow) script.
+
+1. Run the [generate_blob.py](../scripts/generate_blob.py) script, and copy its standard output to your clipboard.
+```sh
+python3 scripts/generate_blob.py
+```
+
+2. Find the string named `TEMPLATE_BLOB` in the [4DGBWorkflow](../4DGBWorkflow) script and replace it with the new blob from your clipboard.
+
+3. You may want to re-create the template directory to make sure it works.
+```
+./4DGBWorkflow version --output test
+```
+
+## Publishing a new version
 
 Follow these steps when you're ready to publish and release a new version of the workflow.
 
@@ -32,18 +50,3 @@ make module
 ``github.com/4dgb/4dgb-docs``
 
 
-## If you changed the Example Project
-
-If your changes affected the example project in the [example_project](../example_project/) directory, then you'll need to update the version embedded in the [4DGBWorkflow](../4DGBWorkflow) script.
-
-1. Run the [generate_blob.py](../scripts/generate_blob.py) script, and copy its standard output to your clipboard.
-```sh
-python3 scripts/generate_blob.py
-```
-
-2. Find the string named `TEMPLATE_BLOB` in the [4DGBWorkflow](../4DGBWorkflow) script and replace it with the new blob from your clipboard.
-
-3. You may want to re-create the template directory to make sure it works.
-```
-./4DGBWorkflow version --output test
-```
