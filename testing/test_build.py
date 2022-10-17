@@ -25,3 +25,9 @@ class TestCSV2Tracks(unittest.TestCase):
         # did the computation create the expected number of points?
         self.assertEqual(int(result), 255)
 
+        # check the project file
+        checksum = "fc81793037c4722d47e2475a3ed597eb"
+        x = subprocess.check_output('md5 -q 4DGB_Project/.build/project.json', stderr=subprocess.STDOUT, shell=True)
+        result = x.decode("utf-8")
+        result = result.strip()
+        self.assertEqual(result, self.checksum )
