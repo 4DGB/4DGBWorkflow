@@ -1,8 +1,5 @@
 import unittest
 import subprocess
-# import os
-# import shutil
-# import filecmp
 
 class TestCSV2Tracks(unittest.TestCase):
     checksum = "35d51e6b1b4dd243e00f1c535cf3bf97"
