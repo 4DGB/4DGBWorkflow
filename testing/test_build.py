@@ -15,7 +15,7 @@ class TestCSV2Tracks(unittest.TestCase):
 
     def test_create(self):
         # create the destination directory; copy files
-        x = subprocess.check_output('./4DGBWorkflow run 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
+        x = subprocess.check_output('./4DGBWorkflow build 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
         result = x.decode("utf-8")
         result = result.strip()
         print("result = {}".format(result))
