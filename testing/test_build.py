@@ -28,15 +28,14 @@ class TestCSV2Tracks(unittest.TestCase):
         self.assertEqual(int(result[0]), 255)
 
         # check the project file
-        checksum = "fc81793037c4722d47e2475a3ed597eb"
-        x = subprocess.check_output('md5 -q 4DGB_Project/.build/project.json', stderr=subprocess.STDOUT, shell=True)
-        result = x.decode("utf-8")
-        result = result.strip()
-        self.assertEqual(result, self.checksum )
+        tests = { 
+                    ["fc81793037c4722d47e2475a3ed597eb", "4DGB_Project/.build/project.json"],
+                    ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/source/annotations.csv"],
+                    ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/tracks/H3K27ac/track.npz"]
+                }
 
-        # check the project file
-        checksum = "acc0e566818f2e5479446a0b8d3616ee"
-        x = subprocess.check_output('md5 -q 4DGB_Project/.build/source/annotations.csv', stderr=subprocess.STDOUT, shell=True)
-        result = x.decode("utf-8")
-        result = result.strip()
-        self.assertEqual(result, self.checksum )
+        for test in tests:
+            x = subprocess.check_output('md5 -q {}'.filename(test[1]), stderr=subprocess.STDOUT, shell=True)
+            result = x.decode("utf-8")
+            result = result.strip()
+            self.assertEqual(result, test[0])
