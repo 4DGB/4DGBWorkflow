@@ -33,3 +33,10 @@ class TestCSV2Tracks(unittest.TestCase):
         result = x.decode("utf-8")
         result = result.strip()
         self.assertEqual(result, self.checksum )
+
+        # check the project file
+        checksum = "acc0e566818f2e5479446a0b8d3616ee"
+        x = subprocess.check_output('md5 -q 4DGB_Project/.build/source/annotations.csv', stderr=subprocess.STDOUT, shell=True)
+        result = x.decode("utf-8")
+        result = result.strip()
+        self.assertEqual(result, self.checksum )
