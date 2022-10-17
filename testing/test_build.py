@@ -2,7 +2,7 @@ import unittest
 import subprocess
 
 class TestCSV2Tracks(unittest.TestCase):
-    checksum = "3ec9833deef4a63b672df19aa4358b0e"
+    checksum = "0a1279e7070d6f14bf4408d0f980232f"
 
     def __init__(self, *args, **kwargs):
         super(TestCSV2Tracks, self).__init__(*args, **kwargs)
