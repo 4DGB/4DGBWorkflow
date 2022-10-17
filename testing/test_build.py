@@ -16,14 +16,16 @@ class TestCSV2Tracks(unittest.TestCase):
         x = subprocess.check_output('wc -l 4DGB_Project/.build/lammps_0/structure.csv', stderr=subprocess.STDOUT, shell=True)
         result = x.decode("utf-8")
         result = result.strip()
+        result = result.split()
         # did the computation create the expected number of points?
-        self.assertEqual(int(result), 255)
+        self.assertEqual(int(result[0]), 255)
 
         x = subprocess.check_output('wc -l 4DGB_Project/.build/lammps_1/structure.csv', stderr=subprocess.STDOUT, shell=True)
         result = x.decode("utf-8")
         result = result.strip()
+        result = result.split()
         # did the computation create the expected number of points?
-        self.assertEqual(int(result), 255)
+        self.assertEqual(int(result[0]), 255)
 
         # check the project file
         checksum = "fc81793037c4722d47e2475a3ed597eb"
