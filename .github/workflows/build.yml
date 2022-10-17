@@ -24,6 +24,7 @@ jobs:
     - name: Create the template and verify it
       run: |
         pip install checksumdir
-        python -m unittest testing/test_build.py
-        # ./4DGBWorkflow template
-        # ./4DGBWorkflow build 4DGB_Project
+        # python -m unittest testing/test_build.py
+        ./4DGBWorkflow template
+        ./4DGBWorkflow build 4DGB_Project
+        checksumdir -a md5 4DGB_Project
