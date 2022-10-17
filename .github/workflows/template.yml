@@ -23,5 +23,5 @@ jobs:
     - name: Create the template and verify it
       run: |
         ./4DGBWorkflow template 
-        pipd install checksumdir
+        pip install checksumdir
         checksumdir -a md5 4DGB_Project
