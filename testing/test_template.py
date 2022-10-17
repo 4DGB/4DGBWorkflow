@@ -1,8 +1,7 @@
 import unittest
-# import os
 import subprocess
-import numpy
-import shutil
+# import os
+# import shutil
 # import filecmp
 
 class TestCSV2Tracks(unittest.TestCase):
