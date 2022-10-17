@@ -13,12 +13,11 @@ class TestCSV2Tracks(unittest.TestCase):
     def setUp(self):
         print("Running test: {}".format(self._testMethodName))
 
-    def test_create(self):
+    def test_build(self):
         # create the destination directory; copy files
-        x = subprocess.check_output('./4DGBWorkflow build 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
+        subprocess.check_output('./4DGBWorkflow build 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
+        x = subprocess.check_output('checksumdir -a md5 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
         result = x.decode("utf-8")
         result = result.strip()
-        print("result = {}".format(result))
-        x = subprocess.check_output('checksumdir -a md5 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
         self.assertEqual(result, self.checksum )
 
