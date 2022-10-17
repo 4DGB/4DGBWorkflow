@@ -15,7 +15,7 @@ class TestCSV2Tracks(unittest.TestCase):
 
     def test_create(self):
         # create the destination directory; copy files
-        x = subprocess.check_output(['./4DGBWorkflow template'])
+        x = subprocess.check_output('./4DGBWorkflow template', stderr=subprocess.STDOUT, shell=True)
         print("result is {}".format(x))
         self.assertEqual(x, self.checksum )
 
