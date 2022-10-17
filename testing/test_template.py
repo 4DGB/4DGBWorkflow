@@ -17,5 +17,7 @@ class TestCSV2Tracks(unittest.TestCase):
         # create the destination directory; copy files
         subprocess.check_output('./4DGBWorkflow template', stderr=subprocess.STDOUT, shell=True)
         x = subprocess.check_output('checksumdir -a md5 4DGB_Project', stderr=subprocess.STDOUT, shell=True)
-        self.assertEqual(x, self.checksum )
+        result = x.decode("utf-8")
+        result = result.trim()
+        self.assertEqual(result, self.checksum )
 
