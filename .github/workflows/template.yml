@@ -24,4 +24,4 @@ jobs:
       run: |
         ./4DGBWorkflow template 
         pip install checksumdir
-        checksumdir -a md5 4DGB_Project
+        python -m unittest testing/test_template.py
