@@ -94,7 +94,7 @@ def do_build(args):
     outdir.mkdir(parents=True, exist_ok=True)
 
     docker_run([
-        'run', '-it', '--rm',
+        'run', '--interactive', '--tty', '--rm',
         *uid, *bind,
         f'{args.build_container}:{args.tag}'
     ])
@@ -115,7 +115,7 @@ def do_view(args):
     port = str(args.port)
 
     docker_run([
-        'run', '-it', '--rm',
+        'run', '--interactive', '--tty', '--rm',
         *uid, *bind,
         '-p', f'127.0.0.1:{port}:8000',
         f'{args.view_container}:{args.tag}',
