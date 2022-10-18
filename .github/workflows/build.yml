@@ -25,6 +25,7 @@ jobs:
       run: |
         # pip install checksumdir
         python -m unittest testing/test_build.py
+        md5sum --quiet 4DGB_Project/.build/project.json
         # ./4DGBWorkflow template
         # ./4DGBWorkflow build 4DGB_Project
         # checksumdir -a md5 4DGB_Project
