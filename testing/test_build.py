@@ -28,9 +28,9 @@ class TestCSV2Tracks(unittest.TestCase):
 
         # check the project file
         tests = [ 
-                    ["fc81793037c4722d47e2475a3ed597eb", "4DGB_Project/.build/project.json"],
+                    ["25428dcc731527679e386392fc9be06a", "4DGB_Project/.build/project.json"],
                     ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/source/annotations.csv"],
-                    ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/tracks/H3K27ac/track.npz"]
+                    ["ee2572b18aac42a553fa39eb6a1140f9", "4DGB_Project/.build/tracks/H3K27ac/track.npz"]
                 ]
         for test in tests:
             x = subprocess.check_output("md5sum {}".format(test[1]), stderr=subprocess.STDOUT, shell=True)
