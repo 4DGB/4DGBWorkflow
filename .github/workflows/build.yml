@@ -23,7 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }} 
     - name: Create the template and verify it
       run: |
-        pip install checksumdir
+        # pip install checksumdir
         python -m unittest testing/test_build.py
         # ./4DGBWorkflow template
         # ./4DGBWorkflow build 4DGB_Project
