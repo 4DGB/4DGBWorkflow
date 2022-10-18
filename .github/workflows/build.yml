@@ -24,4 +24,3 @@ jobs:
     - name: Create the template and verify it
       run: |
         python -m unittest testing/test_build.py
-        md5sum 4DGB_Project/.build/project.json
