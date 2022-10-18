@@ -33,7 +33,8 @@ class TestCSV2Tracks(unittest.TestCase):
                     ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/tracks/H3K27ac/track.npz"]
                 ]
         for test in tests:
-            x = subprocess.check_output("md5 -q {}".format(test[1]), stderr=subprocess.STDOUT, shell=True)
+            x = subprocess.check_output("md5sum -q {}".format(test[1]), stderr=subprocess.STDOUT, shell=True)
             result = x.decode("utf-8")
             result = result.strip()
-            self.assertEqual(result, test[0])
+            result = result.split()
+            self.assertEqual(result[0], test[0])
