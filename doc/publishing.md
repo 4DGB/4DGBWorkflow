@@ -22,7 +22,7 @@ Follow these steps when you're ready to publish and release a new version of the
 
 1. Update the verison number in [version.txt](../version.txt).
 
-2. Update the workflow version in ``example_project/project.yaml`` 
+2. Update the workflow version in ``example_project/project.yaml`` and ``example/project.full.yaml`` 
 ```sh
 workflow:
     version: <new version number>
