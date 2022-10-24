@@ -26,7 +26,7 @@ class TestCSV2Tracks(unittest.TestCase):
             # did the computation create the expected number of points?
             self.assertEqual(int(result[0]), 255)
 
-        # check the project file
+        # check several files 
         tests = [ 
                     ["25428dcc731527679e386392fc9be06a", "4DGB_Project/.build/project.json"],
                     ["acc0e566818f2e5479446a0b8d3616ee", "4DGB_Project/.build/source/annotations.csv"],

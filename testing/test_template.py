@@ -1,11 +1,8 @@
 import unittest
 import subprocess
-# import os
-# import shutil
-# import filecmp
 
 class TestCSV2Tracks(unittest.TestCase):
-    checksum = "b49d3a9c1b42d804be553b1537e23a63"
+    checksum = "e3d88617835635e6f8aef80fea458aa3"
 
     def __init__(self, *args, **kwargs):
         super(TestCSV2Tracks, self).__init__(*args, **kwargs)
