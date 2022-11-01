@@ -27,17 +27,19 @@ Follow these steps when you're ready to publish and release a new version of the
 workflow:
     version: <new version number>
 ```
-3. Rebuild the Docker images
+3. Update the template test in ``testing/test_template.py``
+
+4. Rebuild the Docker images
 ```sh
 make docker
 ```
 
-4. Tag the new docker images with your new version number and push both tags to DockerHub (You'll need to be logged into an account with permissions to do so)
+5. Tag the new docker images with your new version number and push both tags to DockerHub (You'll need to be logged into an account with permissions to do so)
 ```sh
 make docker-tag
 ```
 
-5. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will
+6. Push an updated python module to pypi. Do this by running make on the `module` target. `make` will
 create a clean version of the `4dgb-workflow` module, and attempt to upload it to `pypi` with `twine`.
 If `twine` is not installed, or if you do not have permission to upload the module to `pypi`, this 
 will fail.
@@ -46,7 +48,7 @@ will fail.
 make module
 ```
 
-6. Update documentation at ``4dgb.readthedocs.io`` by updating the associated repository at 
+7. Update documentation at ``4dgb.readthedocs.io`` by updating the associated repository at 
 ``github.com/4dgb/4dgb-docs``
 
 
