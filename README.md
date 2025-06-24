@@ -10,6 +10,8 @@ The workflow is split into two stages: "Build" and "View". Each implemented with
 
 ## Setting up Input Data
 
+Building this workflow is currently only supported under Linux.
+
 1. Create a directory to contain all of your input data. In it, create a `workflow.yaml` file with the following format:
 
 ```yaml
